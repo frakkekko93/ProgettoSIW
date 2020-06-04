@@ -1,8 +1,12 @@
 package it.uniroma3.siw.progetto.model;
 
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,9 +32,16 @@ public class Utente {
 	
 	private LocalDateTime dataDiCreazione;
 	
+	@ManyToMany(mappedBy = "membri")
+	private List<Progetto> progettiVisibili;
+	
+	@OneToMany(mappedBy = "proprietari")
+	private List<Progetto> progettiCreati;
+	
 	public Utente()
 	{
-		
+		this.progettiVisibili = new ArrayList<>();
+		this.progettiCreati = new ArrayList<>();
 	}
 	
 	public Utente(String username, String password, String nome, String cognome, LocalDateTime dataDiCreazione)
