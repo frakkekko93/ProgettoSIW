@@ -10,12 +10,13 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 
 @Entity
-public class Utente {
-
+public class Utente 
+{
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long Id;
@@ -30,12 +31,13 @@ public class Utente {
 	
 	private String cognome;
 	
+	@Column(updatable=false, nullable=false)
 	private LocalDateTime dataDiCreazione;
 	
-	@ManyToMany(mappedBy = "membri")
+	@ManyToMany(mappedBy = "membri", fetch=FetchType.LAZY)
 	private List<Progetto> progettiVisibili;
 	
-	@OneToMany(mappedBy = "proprietari")
+	@OneToMany(mappedBy = "proprietario", fetch=FetchType.EAGER)
 	private List<Progetto> progettiCreati;
 	
 	public Utente()
