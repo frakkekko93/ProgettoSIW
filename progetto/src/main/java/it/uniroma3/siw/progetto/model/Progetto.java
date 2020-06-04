@@ -6,10 +6,10 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -24,26 +24,25 @@ public class Progetto
 	@Column(nullable=false)
 	private String nome;
 
+	@Column(updatable=false, nullable=false)
 	private LocalDateTime dataInizio;
 
-	@ManyToMany
+	@ManyToMany(fetch=FetchType.LAZY)
 	private List<Utente> membri;
 
-	@ManyToOne
-	private List<Utente> proprietari;
+	@ManyToOne(fetch=FetchType.EAGER)
+	private Utente proprietario;
 	
-	@OneToMany
-	@JoinColumn(name="taskList")
+	@OneToMany(mappedBy="progetto", fetch=FetchType.EAGER)
 	private List<Task> tasks;
 	
-	@ManyToMany
+	@ManyToMany(fetch=FetchType.LAZY)
 	private List<Tag> tags;
 	
 	/* Costruttori */
 	public Progetto()
 	{
 		this.membri = new ArrayList<>();
-		this.proprietari = new ArrayList<>();
 		this.tasks = new ArrayList<>();
 		this.tags = new ArrayList<>();
 	}

@@ -6,10 +6,12 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Task 
@@ -23,9 +25,13 @@ public class Task
 	
 	private String descrizione;
 	
+	@Column(updatable=false, nullable=false)
 	private LocalDateTime dataCreazione;
 
-	@ManyToMany
+	@ManyToOne
+	private Progetto progetto;
+	
+	@ManyToMany(fetch=FetchType.LAZY)
 	private List<Tag> tags;
 	
 	/* Costruttori */
