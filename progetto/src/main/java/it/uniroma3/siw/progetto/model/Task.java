@@ -1,12 +1,15 @@
 package it.uniroma3.siw.progetto.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 
 @Entity
 public class Task 
@@ -22,10 +25,13 @@ public class Task
 	
 	private LocalDateTime dataCreazione;
 
+	@ManyToMany
+	private List<Tag> tags;
+	
 	/* Costruttori */
 	public Task() 
 	{
-		
+		this.tags = new ArrayList<>();
 	}
 
 	public Task(String nome, String descrizione, LocalDateTime dataCreazione) 

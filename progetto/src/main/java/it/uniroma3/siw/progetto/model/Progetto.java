@@ -1,12 +1,17 @@
 package it.uniroma3.siw.progetto.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Progetto 
@@ -19,11 +24,19 @@ public class Progetto
 	private String nome;
 	
 	private LocalDateTime dataInizio;
-
+	
+	@OneToMany
+	@JoinColumn(name="taskList")
+	private List<Task> tasks;
+	
+	@ManyToMany
+	private List<Tag> tags;
+	
 	/* Costruttori */
 	public Progetto() 
 	{
-		
+		this.tasks = new ArrayList<>();
+		this.tags = new ArrayList<>();
 	}
 
 	public Progetto(String nome, LocalDateTime dataInizio) 
