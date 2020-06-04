@@ -44,6 +44,8 @@ public class Progetto
 	{
 		this.membri = new ArrayList<>();
 		this.proprietari = new ArrayList<>();
+		this.tasks = new ArrayList<>();
+		this.tags = new ArrayList<>();
 	}
 
 	public Progetto(String nome, LocalDateTime dataInizio)
