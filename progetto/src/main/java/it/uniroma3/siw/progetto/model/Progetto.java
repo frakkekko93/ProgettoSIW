@@ -29,7 +29,14 @@ public class Progetto
 
 	@ManyToOne
 	private List<Utente> proprietari;
-
+	
+	@OneToMany
+	@JoinColumn(name="taskList")
+	private List<Task> tasks;
+	
+	@ManyToMany
+	private List<Tag> tags;
+	
 	/* Costruttori */
 	public Progetto()
 	{
