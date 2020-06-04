@@ -9,68 +9,66 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
 
 @Entity
-public class Progetto 
+public class Progetto
 {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;
-	
+
 	@Column(nullable=false)
 	private String nome;
-	
+
 	private LocalDateTime dataInizio;
-	
-	@OneToMany
-	@JoinColumn(name="taskList")
-	private List<Task> tasks;
-	
+
 	@ManyToMany
-	private List<Tag> tags;
-	
+	private List<Utente> membri;
+
+	@ManyToOne
+	private List<Utente> proprietari;
+
 	/* Costruttori */
-	public Progetto() 
+	public Progetto()
 	{
-		this.tasks = new ArrayList<>();
-		this.tags = new ArrayList<>();
+		this.membri = new ArrayList<>();
+		this.proprietari = new ArrayList<>();
 	}
 
-	public Progetto(String nome, LocalDateTime dataInizio) 
+	public Progetto(String nome, LocalDateTime dataInizio)
 	{
 		this.nome = nome;
 		this.dataInizio = dataInizio;
 	}
 
-	public long getId() 
+	public long getId()
 	{
 		return id;
 	}
 
-	public void setId(long id) 
+	public void setId(long id)
 	{
 		this.id = id;
 	}
 
-	public String getNome() 
+	public String getNome()
 	{
 		return nome;
 	}
 
-	public void setNome(String nome) 
+	public void setNome(String nome)
 	{
 		this.nome = nome;
 	}
 
-	public LocalDateTime getDataInizio() 
+	public LocalDateTime getDataInizio()
 	{
 		return dataInizio;
 	}
 
-	public void setDataInizio(LocalDateTime dataInizio) 
+	public void setDataInizio(LocalDateTime dataInizio)
 	{
 		this.dataInizio = dataInizio;
 	}
