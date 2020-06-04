@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -33,7 +34,7 @@ public class Progetto
 	@ManyToOne(fetch=FetchType.EAGER)
 	private Utente proprietario;
 	
-	@OneToMany(mappedBy="progetto", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="progetto", fetch=FetchType.EAGER, cascade= {CascadeType.REMOVE})
 	private List<Task> tasks;
 	
 	@ManyToMany(fetch=FetchType.LAZY)
