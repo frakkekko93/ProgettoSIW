@@ -1,11 +1,27 @@
-<!DOCTYPE html>
-<html lang="en"
-      xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="https://www.thymeleaf.org">
+<!doctype html>
+<html lang="it" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
 	<head>
-	    <title>TaskManager</title>
+		<meta charset="UTF-8" />
+		<title>Progetto</title>
+		<script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
+		<script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
 	</head>
 	<body>
-		<h1>Welcome!</h1>
+	    <div class="container unauthenticated">
+	    	<h1>Login</h1>
+	        Accedi con Github: <a href="/oauth2/authorization/github">click here</a>
+	    </div>
+	    
+	    <div class="container authenticated" style="display: none">
+	        <p>Benvenuto <span id="user"></span></p>
+	        <p>La tua home: <a href="/home">clicca qui</a></p>
+	    </div>
+	    <script type="text/javascript">
+	          $.get("/user", function(data) {
+	            $("#user").html(data.name);
+	            $(".unauthenticated").hide()
+	            $(".authenticated").show()
+	          });
+        </script>
 	</body>
 </html>
