@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ProgettoApplication 
 {
-	@GetMapping("/")
-	public String message(Principal principal) 
-	{
-		return "Hi "+principal.getName()+" welcome to MammitaApplication";
-	}
+//	@GetMapping("/")
+//	public String message(Principal principal) 
+//	{
+//		return "Hi "+principal.getName()+" welcome to MammitaApplication";
+//	}
 
 	public static void main(String[] args) 
 	{
