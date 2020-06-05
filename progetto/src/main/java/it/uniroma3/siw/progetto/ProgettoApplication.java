@@ -11,15 +11,16 @@ import org.springframework.web.bind.annotation.RestController;
 @SpringBootApplication
 @EnableOAuth2Sso
 @RestController
-public class ProgettoApplication {
-	
+public class ProgettoApplication 
+{
 	@GetMapping("/")
-	public String message(Principal principal) {
+	public String message(Principal principal) 
+	{
 		return "Hi "+principal.getName()+" welcome to MammitaApplication";
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) 
+	{
 		SpringApplication.run(ProgettoApplication.class, args);
 	}
-
 }

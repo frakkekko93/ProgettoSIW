@@ -59,20 +59,12 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
-<<<<<<< Updated upstream
-			<artifactId>spring-cloud-starter-oauth2</artifactId>
-=======
 			<artifactId>spring-cloud-starter-security</artifactId>
->>>>>>> Stashed changes
 			<version>2.1.3.RELEASE</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
-<<<<<<< Updated upstream
-			<artifactId>spring-cloud-starter-security</artifactId>
-=======
 			<artifactId>spring-cloud-starter-oauth2</artifactId>
->>>>>>> Stashed changes
 			<version>2.1.3.RELEASE</version>
 		</dependency>
 	</dependencies>
