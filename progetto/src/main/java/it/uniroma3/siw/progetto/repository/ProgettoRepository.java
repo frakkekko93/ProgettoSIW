@@ -6,6 +6,5 @@ import it.uniroma3.siw.progetto.model.Progetto;
 
 public interface ProgettoRepository extends CrudRepository<Progetto, Long> 
 {
-
 	
 }

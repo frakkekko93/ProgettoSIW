@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 import it.uniroma3.siw.progetto.repository.TaskRepository;
 
 @Service
-public class TaskService {
-
+public class TaskService 
+{
 	@Autowired
 	protected TaskRepository taskRepository;
 }

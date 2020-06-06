@@ -6,5 +6,5 @@ import it.uniroma3.siw.progetto.model.Utente;
 
 public interface UtenteRepository extends CrudRepository<Utente, Long> 
 {
-
+	
 }

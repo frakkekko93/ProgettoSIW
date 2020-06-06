@@ -20,19 +20,15 @@ public class Tag {
 	
 	private String descrizione;
 	
+	/* Costruttore */
 	public Tag()
 	{
 		
 	}
-	
-	public Tag(String nome, String colore, String descrizione) 
-	{
-		this.nome = nome;
-		this.colore = colore;
-		this.descrizione = descrizione;
-	}
 
-	public Long getId() {
+	/* Setters and getters */
+	public Long getId() 
+	{
 		return Id;
 	}
 
@@ -70,7 +66,4 @@ public class Tag {
 	{
 		this.descrizione = descrizione;
 	}
-	
-	
-
 }

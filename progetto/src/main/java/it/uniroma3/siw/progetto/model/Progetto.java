@@ -46,14 +46,10 @@ public class Progetto
 		this.membri = new ArrayList<>();
 		this.tasks = new ArrayList<>();
 		this.tags = new ArrayList<>();
+		this.dataInizio = LocalDateTime.now();
 	}
 
-	public Progetto(String nome, LocalDateTime dataInizio)
-	{
-		this.nome = nome;
-		this.dataInizio = dataInizio;
-	}
-
+	/* Setters and getters */
 	public long getId()
 	{
 		return id;

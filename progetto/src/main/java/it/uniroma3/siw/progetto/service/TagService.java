@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 import it.uniroma3.siw.progetto.repository.TagRepository;
 
 @Service
-public class TagService {
-
+public class TagService 
+{
 	@Autowired
 	protected TagRepository tagRepository;
 }

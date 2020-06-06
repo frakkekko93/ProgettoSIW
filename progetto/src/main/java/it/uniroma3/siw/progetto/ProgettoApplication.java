@@ -16,15 +16,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
 @RestController
-public class ProgettoApplication extends WebSecurityConfigurerAdapter {
-
+public class ProgettoApplication extends WebSecurityConfigurerAdapter 
+{
 	@GetMapping("/user")
-	public Map<String, Object> user(@AuthenticationPrincipal OAuth2User principal) {
+	public Map<String, Object> user(@AuthenticationPrincipal OAuth2User principal) 
+	{
 		return Collections.singletonMap("name", principal.getAttribute("name"));
 	}
 
 	@Override
-	protected void configure(HttpSecurity http) throws Exception {
+	protected void configure(HttpSecurity http) throws Exception 
+	{
 		// @formatter:off
 		http
 			.authorizeRequests(a -> a

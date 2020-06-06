@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 import it.uniroma3.siw.progetto.repository.ProgettoRepository;
 
 @Service
-public class ProgettoService {
-
+public class ProgettoService 
+{
 	@Autowired
 	protected ProgettoRepository progettoRepository;
 }

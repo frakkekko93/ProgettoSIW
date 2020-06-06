@@ -6,5 +6,5 @@ import it.uniroma3.siw.progetto.model.Tag;
 
 public interface TagRepository extends CrudRepository<Tag, Long> 
 {
-
+	
 }

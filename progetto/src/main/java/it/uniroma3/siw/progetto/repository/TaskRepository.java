@@ -6,5 +6,5 @@ import it.uniroma3.siw.progetto.model.Task;
 
 public interface TaskRepository extends CrudRepository <Task, Long> 
 {
-
+	
 }

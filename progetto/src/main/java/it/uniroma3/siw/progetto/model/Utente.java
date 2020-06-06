@@ -22,15 +22,11 @@ public class Utente
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long Id;
 	
-	@Column(nullable = false)
-	private String username;
-	
-	@Column(nullable = false)
-	private String password;
-	
 	private String nome;
 	
 	private String cognome;
+	
+	private String mail;
 	
 	@Column(updatable=false, nullable=false)
 	private LocalDateTime dataDiCreazione;
@@ -41,22 +37,15 @@ public class Utente
 	@OneToMany(mappedBy = "proprietario", fetch=FetchType.EAGER, cascade= {CascadeType.REMOVE})
 	private List<Progetto> progettiCreati;
 	
+	/* Costruttore */
 	public Utente()
 	{
 		this.progettiVisibili = new ArrayList<>();
 		this.progettiCreati = new ArrayList<>();
-	}
-	
-	public Utente(String username, String password, String nome, String cognome, LocalDateTime dataDiCreazione)
-	{
-		this.username = username;
-		this.password = password;
-		this.nome = nome;
-		this.cognome = cognome;
-		this.dataDiCreazione = dataDiCreazione;
-		
+		this.dataDiCreazione = LocalDateTime.now();
 	}
 
+	/* Setters and getters */
 	public Long getId() 
 	{
 		return Id;
@@ -66,26 +55,6 @@ public class Utente
 	
 	{
 		Id = id;
-	}
-
-	public String getUsername() 
-	{
-		return username;
-	}
-
-	public void setUsername(String username) 
-	{
-		this.username = username;
-	}
-
-	public String getPassword() 
-	{
-		return password;
-	}
-
-	public void setPassword(String password) 
-	{
-		this.password = password;
 	}
 
 	public String getNome() 
@@ -117,7 +86,34 @@ public class Utente
 	{
 		this.dataDiCreazione = dataDiCreazione;
 	}
-	
-	
-	
+
+	public String getMail() 
+	{
+		return mail;
+	}
+
+	public void setMail(String mail) 
+	{
+		this.mail = mail;
+	}
+
+	public List<Progetto> getProgettiVisibili() 
+	{
+		return progettiVisibili;
+	}
+
+	public void setProgettiVisibili(List<Progetto> progettiVisibili) 
+	{
+		this.progettiVisibili = progettiVisibili;
+	}
+
+	public List<Progetto> getProgettiCreati() 
+	{
+		return progettiCreati;
+	}
+
+	public void setProgettiCreati(List<Progetto> progettiCreati) 
+	{
+		this.progettiCreati = progettiCreati;
+	}
 }

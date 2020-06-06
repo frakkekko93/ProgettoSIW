@@ -38,15 +38,10 @@ public class Task
 	public Task() 
 	{
 		this.tags = new ArrayList<>();
+		this.dataCreazione = LocalDateTime.now();
 	}
 
-	public Task(String nome, String descrizione, LocalDateTime dataCreazione) 
-	{
-		this.nome = nome;
-		this.descrizione = descrizione;
-		this.dataCreazione = dataCreazione;
-	}
-
+	/* Setters and getters */
 	public long getId() 
 	{
 		return id;
