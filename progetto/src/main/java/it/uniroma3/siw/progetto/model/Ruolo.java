@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Ruolo 
@@ -21,12 +22,14 @@ public class Ruolo
 	
 	@Column(nullable=false)
 	private String role;
+	
+	@OneToOne
+	private Utente user;
 
 	/* Costruttore */
-	public Ruolo(String username, String role) 
+	public Ruolo() 
 	{
-		this.username = username;
-		this.role = role;
+		
 	}
 
 	/* Getters/Setters */
@@ -58,5 +61,15 @@ public class Ruolo
 	public void setRole(String role) 
 	{
 		this.role = role;
+	}
+
+	public Utente getUser() 
+	{
+		return user;
+	}
+
+	public void setUser(Utente user) 
+	{
+		this.user = user;
 	}	
 }
