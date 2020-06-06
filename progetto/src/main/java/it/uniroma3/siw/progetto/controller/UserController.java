@@ -12,4 +12,18 @@ public class UserController
 	{
 		return "home";
     }
+	
+	
+	@RequestMapping(value = { "/userProfile" }, method = RequestMethod.GET)
+    public String userProfile()
+	{
+		return "userProfile";
+    }
+	
+	@RequestMapping(value = { "/updateProfile" }, method = RequestMethod.GET)
+    public String updateProfile()
+	{
+		return "updateProfile";
+    }
+	
 }
