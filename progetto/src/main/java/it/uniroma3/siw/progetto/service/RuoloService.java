@@ -1,12 +1,14 @@
 package it.uniroma3.siw.progetto.service;
 
 import java.util.Optional;
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import it.uniroma3.siw.progetto.model.Ruolo;
 import it.uniroma3.siw.progetto.model.Utente;
 import it.uniroma3.siw.progetto.repository.RuoloRepository;
 
+@Service
 public class RuoloService 
 {
 	@Autowired
@@ -18,9 +20,14 @@ public class RuoloService
 	{
 		UtenteService us = new UtenteService();
 		
+		if((username.isEmpty()) || username == null)
+		{
+			return null;
+		}
+		
 		Utente u = us.findByUsername(username);
 		
-		Optional<Ruolo> result = ruoloRepository.findByUser(u);
+		Optional<Ruolo> result = this.ruoloRepository.findByUser(u);
 		
 		return result.orElse(null);
 	}
@@ -29,6 +36,6 @@ public class RuoloService
 	@Transactional
 	public void save(Ruolo r)
 	{
-		ruoloRepository.save(r);
+		this.ruoloRepository.save(r);
 	}
 }

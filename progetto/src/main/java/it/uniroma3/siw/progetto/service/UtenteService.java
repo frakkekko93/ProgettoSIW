@@ -1,7 +1,8 @@
 package it.uniroma3.siw.progetto.service;
 
 import java.util.Optional;
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import it.uniroma3.siw.progetto.model.Utente;
 import it.uniroma3.siw.progetto.repository.UtenteRepository;
@@ -9,13 +10,14 @@ import it.uniroma3.siw.progetto.repository.UtenteRepository;
 @Service
 public class UtenteService 
 {	
+	@Autowired
 	protected UtenteRepository utenteRepository;
 	
 	/* Trova un utente in base al suo id */
 	@Transactional
-	public Utente getUtente(Long id)
+	public Utente getUtente(long id)
 	{
-		Optional<Utente> result = utenteRepository.findById(id);
+		Optional<Utente> result = this.utenteRepository.findById(id);
 		
 		return result.orElse(null);
 	}
@@ -24,7 +26,12 @@ public class UtenteService
 	@Transactional
 	public Utente findByUsername(String username)
 	{
-		Optional<Utente> result = utenteRepository.findByUsername(username);
+		if((username.isEmpty()) || username == null)
+		{
+			return null;
+		}
+		
+		Optional<Utente> result = this.utenteRepository.findByUsername(username);
 		
 		return result.orElse(null);
 	}
@@ -33,6 +40,6 @@ public class UtenteService
 	@Transactional
 	public void save(Utente r)
 	{
-		utenteRepository.save(r);
+		this.utenteRepository.save(r);
 	}
 }
