@@ -11,11 +11,28 @@ public class UtenteService
 {	
 	protected UtenteRepository utenteRepository;
 	
+	/* Trova un utente in base al suo id */
 	@Transactional
 	public Utente getUtente(Long id)
 	{
 		Optional<Utente> result = utenteRepository.findById(id);
 		
 		return result.orElse(null);
+	}
+	
+	/* Trova un utente in base al suo username */
+	@Transactional
+	public Utente findByUsername(String username)
+	{
+		Optional<Utente> result = utenteRepository.findByUsername(username);
+		
+		return result.orElse(null);
+	}
+	
+	/* Memorizza un utente nel db */
+	@Transactional
+	public void save(Utente r)
+	{
+		utenteRepository.save(r);
 	}
 }

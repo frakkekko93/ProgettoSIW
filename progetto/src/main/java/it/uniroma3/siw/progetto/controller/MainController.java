@@ -1,11 +1,9 @@
 package it.uniroma3.siw.progetto.controller;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import it.uniroma3.siw.progetto.model.Ruolo;
@@ -14,26 +12,59 @@ import it.uniroma3.siw.progetto.service.RuoloService;
 import it.uniroma3.siw.progetto.service.UtenteService;
 
 @Controller
-@RequestMapping("/")
 public class MainController
-{
-	@RequestMapping(value = "/index", method = RequestMethod.GET)
-    public String index(@AuthenticationPrincipal OAuth2User principal, HttpServletRequest request)
+{	
+	/* Funzione che si occupa di aggiungere ruolo e utente nel db se l'utente loggato 
+	 * si e' appena registrato e aggiunge entrambi al modello.
+	 */
+	private void addUser(@AuthenticationPrincipal OAuth2User principal, Model model)
 	{
-		HttpSession session = request.getSession();
+		RuoloService rs = new RuoloService();
+		UtenteService us = new UtenteService();
+		String idGit = principal.getAttribute("login");		//Prendo l'username dell'utente 
 		
-		if(session.getAttribute("utente") != null)
+		//Cerco il ruolo nel db
+		Ruolo r = rs.getRuolo(idGit);
+		Utente u;
+		
+		/* Se non trovo il ruolo */
+		if(r==null)
 		{
-			RuoloService rs = new RuoloService();
-			UtenteService us = new UtenteService();
+			/* Registro utente e ruolo nel db */
+			r = new Ruolo();
+			u = new Utente();
 			
-			String idGit = principal.getAttribute("name");
+			u.setUsername(idGit);
+			u.setNome(principal.getName());
+			u.setMail(principal.getAttribute("email"));
+			r.setUser(u);
+			r.setDefaultRole();
 			
-			Ruolo r = rs.getRuolo(idGit);
-			Utente u = us.getUtente(r.getUser().getId());
-			
-			session.setAttribute("utente", u);
-			session.setAttribute("ruolo", r);
+			rs.save(r);
+			us.save(u);
+		}
+		else	//Utente e ruolo esistenti
+		{
+			u = us.getUtente(r.getUser().getId());	//Trovo l'utente legato al ruolo
+		}
+		
+		/* Aggiungo utente e ruolo al modello */
+		model.addAttribute("utente", u);
+		model.addAttribute("ruolo", r);
+	}
+	
+	@RequestMapping(value = "/index", method = RequestMethod.GET)
+    public String index(@AuthenticationPrincipal OAuth2User principal, Model model)
+	{
+		/* Controllo che l'utente sia loggato */
+		if(principal != null)
+		{
+			/* Se l'utente non è stato aggiunto al modello */
+			if(!model.containsAttribute("utente"))
+			{
+				/* Eventualmente lo creo (se non esiste nel db) e lo aggiungo al modello */
+				addUser(principal, model);
+			}
 		}
 		
 		return "index";

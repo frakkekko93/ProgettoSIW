@@ -7,9 +7,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class UserController 
 {
-	@RequestMapping(value = { "/home" }, method = RequestMethod.GET)
+	/* Prende la home dell'utente */
+	@RequestMapping(value = { "/userHome" }, method = RequestMethod.GET)
     public String home()
 	{
 		return "home";
+    }
+	
+	/* Prende il profilo dell'utente */
+	@RequestMapping(value = { "/user/profile" }, method = RequestMethod.GET)
+    public String profile()
+	{
+		return "userProfile";
     }
 }
