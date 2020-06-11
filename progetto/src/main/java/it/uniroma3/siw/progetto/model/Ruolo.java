@@ -18,9 +18,6 @@ public class Ruolo
 	private long id;
 	
 	@Column(nullable=false)
-	private String username;
-	
-	@Column(nullable=false)
 	private String role;
 	
 	@OneToOne
@@ -43,16 +40,6 @@ public class Ruolo
 		this.id = id;
 	}
 
-	public String getUsername() 
-	{
-		return username;
-	}
-
-	public void setUsername(String username) 
-	{
-		this.username = username;
-	}
-
 	public String getRole() 
 	{
 		return role;
@@ -71,5 +58,15 @@ public class Ruolo
 	public void setUser(Utente user) 
 	{
 		this.user = user;
-	}	
+	}
+	
+	public void setDefaultRole()
+	{
+		this.role = DEFAULT_ROLE;
+	}
+	
+	public void setAdmin()
+	{
+		this.role = ADMIN_ROLE;
+	}
 }

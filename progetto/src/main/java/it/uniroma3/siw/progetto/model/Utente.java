@@ -22,6 +22,8 @@ public class Utente
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
+	private String username;
+	
 	private String nome;
 	
 	private String cognome;
@@ -75,6 +77,16 @@ public class Utente
 	public void setCognome(String cognome) 
 	{
 		this.cognome = cognome;
+	}
+
+	public String getUsername() 
+	{
+		return username;
+	}
+
+	public void setUsername(String username) 
+	{
+		this.username = username;
 	}
 
 	public LocalDateTime getDataDiCreazione() 
