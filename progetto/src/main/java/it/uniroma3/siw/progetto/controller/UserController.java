@@ -8,8 +8,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import it.uniroma3.siw.progetto.controller.session.SessionData;
@@ -105,8 +103,9 @@ public class UserController
 	
 	 
 	 @RequestMapping(value = { "/updateProfile" }, method = RequestMethod.POST)
-	    public String updateUtente(HttpServletRequest request, @AuthenticationPrincipal OAuth2User principal)
+	    public String updateUtente(HttpServletRequest request, @AuthenticationPrincipal OAuth2User principal, Model model)
 	 {
+		 Ruolo ruolo = sessionData.getLoggedRole(principal);
 		 Utente utente = sessionData.getLoggedUser(principal);
 		 String nome = request.getParameter("nomeInput"); 
 		 String cognome = request.getParameter("cognomeInput");
@@ -118,7 +117,9 @@ public class UserController
 		 
 		 
 		 utenteService.save(utente);
-		 
+	
+		 model.addAttribute("utente", utente);
+		 model.addAttribute("ruolo", ruolo);
 		 
 		 return "userProfile";
 	 }
