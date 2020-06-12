@@ -24,22 +24,19 @@ public class UtenteService
 	
 	/* Trova un utente in base al suo username */
 	@Transactional
-	public Utente findByUsername(String username)
+	public Utente getUtente(String username)
 	{
-		if((username.isEmpty()) || username == null)
-		{
-			return null;
-		}
-		
 		Optional<Utente> result = this.utenteRepository.findByUsername(username);
 		
 		return result.orElse(null);
 	}
 	
+	
+	
 	/* Memorizza un utente nel db */
 	@Transactional
-	public void save(Utente r)
+	public void save(Utente user)
 	{
-		this.utenteRepository.save(r);
+		this.utenteRepository.save(user);
 	}
 }

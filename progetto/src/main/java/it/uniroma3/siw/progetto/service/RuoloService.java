@@ -18,16 +18,16 @@ public class RuoloService
 	@Transactional
 	public Ruolo getRuolo(String username)
 	{
-		UtenteService us = new UtenteService();
+		UtenteService utenteService = new UtenteService();
 		
 		if((username.isEmpty()) || username == null)
 		{
 			return null;
 		}
 		
-		Utente u = us.findByUsername(username);
+		Utente utente = utenteService.getUtente(username);
 		
-		Optional<Ruolo> result = this.ruoloRepository.findByUser(u);
+		Optional<Ruolo> result = this.ruoloRepository.findByUser(utente);
 		
 		return result.orElse(null);
 	}
