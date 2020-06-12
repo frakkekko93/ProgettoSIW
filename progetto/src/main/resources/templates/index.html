@@ -6,22 +6,27 @@
 		<script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
 		<script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
 	</head>
-	<body>
-	    <div class="container unauthenticated">
-	    	<h1>Login</h1>
-	        Accedi con Github: <a href="/oauth2/authorization/github">clicca qui</a>
-	    </div>
+<!-- 	<body> -->
+<!-- 	    <div class="container unauthenticated"> -->
+<!-- 	    	<h1>Login</h1> -->
+<!-- 	        Accedi con Github: <a href="/oauth2/authorization/github">clicca qui</a> -->
+<!-- 	    </div> -->
 	    
-	    <div class="container authenticated" style="display: none">
-	        <p>Benvenuto <span id="user"></span></p>
-	        <p>La tua home: <a href="/userHome">clicca qui</a></p>
-	    </div>
-	    <script type="text/javascript">
-	          $.get("/user", function(data) {
-	            $("#user").html(data.username);
-	            $(".unauthenticated").hide()
-	            $(".authenticated").show()
-	          });
-        </script>
+<!-- 	    <div class="container authenticated" style="display: none"> -->
+<!-- 	        <p>Benvenuto <span id="user"></span></p> -->
+<!-- 	        <p>La tua home: <a href="/userHome">clicca qui</a></p> -->
+<!-- 	    </div> -->
+<!-- 	    <script type="text/javascript"> -->
+<!-- 	          $.get("/user", function(data) { -->
+<!-- 	            $("#user").html(data.username); -->
+<!-- 	            $(".unauthenticated").hide() -->
+<!-- 	            $(".authenticated").show() -->
+<!-- 	          }); -->
+<!--         </script> -->
+<!-- 	</body> -->
+	<body>
+		<h1>Effettua il Login</h1>
+		<div>Accedi con Github: <a href="/oauth2/authorization/github">clicca qui</a></div>
 	</body>
+
 </html>

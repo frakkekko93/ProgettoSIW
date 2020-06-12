@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="it" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+	<head>
+	    <meta charset="UTF-8">
+	    <title>Progetto</title>
+	</head>
+	<body>
+		<h1>Progetti Creati</h1>
+		<ul>
+			<c:forEach var="project" items="${projects}">
+				<li>Nome: ${project.nome}</li>
+				<li>Descrizione: ${project.descrizione}"</li>
+			</c:forEach>
+		</ul>
+		
+		<div class="footer"><a href="/userHome">Home utente</a></div>
+	</body>
+</html>
