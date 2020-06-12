@@ -24,6 +24,8 @@ public class Progetto
 	@Column(nullable=false)
 	private String nome;
 
+	private String descrizione;
+	
 	@Column(updatable=false, nullable=false)
 	private LocalDateTime dataInizio;
 
@@ -77,5 +79,55 @@ public class Progetto
 	public void setDataInizio(LocalDateTime dataInizio)
 	{
 		this.dataInizio = dataInizio;
+	}
+
+	public String getDescrizione() 
+	{
+		return descrizione;
+	}
+
+	public void setDescrizione(String descrizione) 
+	{
+		this.descrizione = descrizione;
+	}
+
+	public List<Utente> getMembri() 
+	{
+		return membri;
+	}
+
+	public void setMembri(List<Utente> membri) 
+	{
+		this.membri = membri;
+	}
+
+	public Utente getProprietario() 
+	{
+		return proprietario;
+	}
+
+	public void setProprietario(Utente proprietario) 
+	{
+		this.proprietario = proprietario;
+	}
+
+	public List<Task> getTasks() 
+	{
+		return tasks;
+	}
+
+	public void setTasks(List<Task> tasks) 
+	{
+		this.tasks = tasks;
+	}
+
+	public List<Tag> getTags() 
+	{
+		return tags;
+	}
+
+	public void setTags(List<Tag> tags) 
+	{
+		this.tags = tags;
 	}
 }
