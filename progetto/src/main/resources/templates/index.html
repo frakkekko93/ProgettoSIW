@@ -14,11 +14,11 @@
 	    
 	    <div class="container authenticated" style="display: none">
 	        <p>Benvenuto <span id="user"></span></p>
-	        <p>La tua home: <a href="/home">clicca qui</a></p>
+	        <p>La tua home: <a href="/userHome">clicca qui</a></p>
 	    </div>
 	    <script type="text/javascript">
 	          $.get("/user", function(data) {
-	            $("#user").html(data.name);
+	            $("#user").html(data.username);
 	            $(".unauthenticated").hide()
 	            $(".authenticated").show()
 	          });

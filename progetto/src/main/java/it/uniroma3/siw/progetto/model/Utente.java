@@ -3,11 +3,9 @@ package it.uniroma3.siw.progetto.model;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,6 +19,8 @@ public class Utente
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+	
+	private String username;
 	
 	private String nome;
 	
@@ -75,6 +75,16 @@ public class Utente
 	public void setCognome(String cognome) 
 	{
 		this.cognome = cognome;
+	}
+
+	public String getUsername() 
+	{
+		return username;
+	}
+
+	public void setUsername(String username) 
+	{
+		this.username = username;
 	}
 
 	public LocalDateTime getDataDiCreazione() 
