@@ -1,5 +1,8 @@
 package it.uniroma3.siw.progetto.controller;
 
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -12,6 +15,7 @@ import it.uniroma3.siw.progetto.model.Ruolo;
 import it.uniroma3.siw.progetto.model.Utente;
 import it.uniroma3.siw.progetto.service.RuoloService;
 import it.uniroma3.siw.progetto.service.UtenteService;
+
 
 @Controller
 public class UserController
@@ -89,4 +93,36 @@ public class UserController
 		model.addAttribute("ruolo", ruolo);
 		return "userProfile";
     }
+	
+	
+	@RequestMapping(value = { "/updateProfile" }, method = RequestMethod.GET)
+	public String showFormUpdate()
+	{
+		return "updateProfile";
+	}
+	
+	 
+	 @RequestMapping(value = { "/updateProfile" }, method = RequestMethod.POST)
+	    public String updateUtente(HttpServletRequest request, @AuthenticationPrincipal OAuth2User principal, Model model)
+	 {
+		 Ruolo ruolo = sessionData.getLoggedRole(principal);
+		 Utente utente = sessionData.getLoggedUser(principal);
+		 String nome = request.getParameter("nomeInput"); 
+		 String cognome = request.getParameter("cognomeInput");
+		 String mail = request.getParameter("mailInput");
+		 
+		 utente.setNome(nome);
+		 utente.setCognome(cognome);
+		 utente.setMail(mail);
+		 
+		 
+		 utenteService.save(utente);
+	
+		 model.addAttribute("utente", utente);
+		 model.addAttribute("ruolo", ruolo);
+		 
+		 return "userProfile";
+	 }
+	 
+	 
 }
