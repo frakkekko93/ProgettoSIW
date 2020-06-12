@@ -15,7 +15,7 @@ public class UtenteService
 	
 	/* Trova un utente in base al suo id */
 	@Transactional
-	public Utente getUtente(long id)
+	public Utente getUtente(Long id)
 	{
 		Optional<Utente> result = this.utenteRepository.findById(id);
 		
@@ -24,13 +24,8 @@ public class UtenteService
 	
 	/* Trova un utente in base al suo username */
 	@Transactional
-	public Utente findByUsername(String username)
-	{
-		if((username.isEmpty()) || username == null)
-		{
-			return null;
-		}
-		
+	public Utente getUtente(String username)
+	{	
 		Optional<Utente> result = this.utenteRepository.findByUsername(username);
 		
 		return result.orElse(null);
@@ -38,8 +33,8 @@ public class UtenteService
 	
 	/* Memorizza un utente nel db */
 	@Transactional
-	public void save(Utente r)
+	public Utente save(Utente r)
 	{
-		this.utenteRepository.save(r);
+		return this.utenteRepository.save(r);
 	}
 }

@@ -16,26 +16,17 @@ public class RuoloService
 	
 	/* Trova un ruolo in base all'username dell'utente che vi è associato */
 	@Transactional
-	public Ruolo getRuolo(String username)
+	public Ruolo getRuolo(Utente u)
 	{
-		UtenteService us = new UtenteService();
+		Optional<Ruolo> r = this.ruoloRepository.findByUtente(u);
 		
-		if((username.isEmpty()) || username == null)
-		{
-			return null;
-		}
-		
-		Utente u = us.findByUsername(username);
-		
-		Optional<Ruolo> result = this.ruoloRepository.findByUser(u);
-		
-		return result.orElse(null);
+		return r.orElse(null);
 	}
 	
 	/* Salva un ruolo nel db */
 	@Transactional
-	public void save(Ruolo r)
+	public Ruolo save(Ruolo r)
 	{
-		this.ruoloRepository.save(r);
+		return this.ruoloRepository.save(r);
 	}
 }

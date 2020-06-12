@@ -10,18 +10,15 @@ import javax.persistence.OneToOne;
 @Entity
 public class Ruolo 
 {
-	public static final String DEFAULT_ROLE = "DEFAULT";
-    public static final String ADMIN_ROLE = "ADMIN";
-    
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private long id;
-	
+	private Long id;
+    	
 	@Column(nullable=false)
-	private String role;
+	private String ruolo;
 	
 	@OneToOne
-	private Utente user;
+	private Utente utente;
 
 	/* Costruttore */
 	public Ruolo() 
@@ -30,43 +27,43 @@ public class Ruolo
 	}
 
 	/* Getters/Setters */
-	public long getId() 
+	public Long getId() 
 	{
-		return id;
+		return this.id;
 	}
 
-	public void setId(long id) 
+	public void setId(Long id) 
 	{
 		this.id = id;
 	}
 
 	public String getRole() 
 	{
-		return role;
+		return ruolo;
 	}
 
 	public void setRole(String role) 
 	{
-		this.role = role;
+		this.ruolo = role;
 	}
 
 	public Utente getUser() 
 	{
-		return user;
+		return utente;
 	}
 
 	public void setUser(Utente user) 
 	{
-		this.user = user;
+		this.utente = user;
 	}
 	
 	public void setDefaultRole()
 	{
-		this.role = DEFAULT_ROLE;
+		this.ruolo = "DEFAULT";
 	}
 	
 	public void setAdmin()
 	{
-		this.role = ADMIN_ROLE;
+		this.ruolo = "ADMIN";
 	}
 }
