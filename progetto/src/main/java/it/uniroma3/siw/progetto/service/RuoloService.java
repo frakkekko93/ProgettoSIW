@@ -9,33 +9,24 @@ import it.uniroma3.siw.progetto.model.Utente;
 import it.uniroma3.siw.progetto.repository.RuoloRepository;
 
 @Service
-public class RuoloService 
+public class RuoloService
 {
 	@Autowired
 	protected RuoloRepository ruoloRepository;
-	
+
 	/* Trova un ruolo in base all'username dell'utente che vi è associato */
 	@Transactional
-	public Ruolo getRuolo(String username)
+	public Ruolo getRuolo(Utente u)
 	{
-		UtenteService utenteService = new UtenteService();
-		
-		if((username.isEmpty()) || username == null)
-		{
-			return null;
-		}
-		
-		Utente utente = utenteService.getUtente(username);
-		
-		Optional<Ruolo> result = this.ruoloRepository.findByUser(utente);
-		
-		return result.orElse(null);
+		Optional<Ruolo> r = this.ruoloRepository.findByUtente(u);
+
+		return r.orElse(null);
 	}
-	
+
 	/* Salva un ruolo nel db */
 	@Transactional
-	public void save(Ruolo r)
+	public Ruolo save(Ruolo r)
 	{
-		this.ruoloRepository.save(r);
+		return this.ruoloRepository.save(r);
 	}
 }

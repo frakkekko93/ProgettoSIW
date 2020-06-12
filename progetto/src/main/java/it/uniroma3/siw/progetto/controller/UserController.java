@@ -1,12 +1,12 @@
 package it.uniroma3.siw.progetto.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
 import it.uniroma3.siw.progetto.model.Ruolo;
 import it.uniroma3.siw.progetto.model.Utente;
 import it.uniroma3.siw.progetto.service.RuoloService;
@@ -15,38 +15,41 @@ import it.uniroma3.siw.progetto.service.UtenteService;
 @Controller
 public class UserController
 {
+	@Autowired
+	protected RuoloService ruoloService;
+
+	@Autowired
+	protected UtenteService utenteService;
+
 	/* Funzione che si occupa di aggiungere ruolo e utente nel db se l'utente loggato
 	 * si e' appena registrato e aggiunge entrambi al modello.
 	 */
 	private void addUser(@AuthenticationPrincipal OAuth2User principal, Model model)
 	{
-		RuoloService rs = new RuoloService();
-		UtenteService us = new UtenteService();
 		String idGit = principal.getAttribute("login");		//Prendo l'username dell'utente
 
-		//Cerco il ruolo nel db
-		Ruolo r = rs.getRuolo(idGit);
-		Utente u;
+		/* Cerco l'utente */
+		Utente u = this.utenteService.getUtente(idGit);
+		Ruolo r;
 
-		/* Se non trovo il ruolo */
-		if(r==null)
+		/* Utente insesitente */
+		if(u==null)
 		{
-			/* Registro utente e ruolo nel db */
-			r = new Ruolo();
+			/* Aggiungo utente e ruolo al database */
 			u = new Utente();
+			r = new Ruolo();
 
 			u.setUsername(idGit);
-			u.setNome(principal.getName());
 			u.setMail(principal.getAttribute("email"));
-			r.setUser(u);
 			r.setDefaultRole();
+			r.setUser(u);
 
-			rs.save(r);
-			us.save(u);
+			u = this.utenteService.save(u);
+			r = this.ruoloService.save(r);
 		}
-		else	//Utente e ruolo esistenti
+		else //Utente già registrato
 		{
-			u = us.getUtente(r.getUser().getId());	//Trovo l'utente legato al ruolo
+			r = this.ruoloService.getRuolo(u);		//Prendo il ruolo
 		}
 
 		/* Aggiungo utente e ruolo al modello */
@@ -68,6 +71,7 @@ public class UserController
 				addUser(principal, model);
 			}
 		}
+
 		return "home";
     }
 
