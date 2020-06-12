@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import it.uniroma3.siw.progetto.controller.session.SessionData;
 import it.uniroma3.siw.progetto.model.Ruolo;
 import it.uniroma3.siw.progetto.model.Utente;
 import it.uniroma3.siw.progetto.service.RuoloService;
@@ -20,6 +22,9 @@ public class UserController
 
 	@Autowired
 	protected UtenteService utenteService;
+	
+	@Autowired
+	protected SessionData sessionData;
 
 	/* Funzione che si occupa di aggiungere ruolo e utente nel db se l'utente loggato
 	 * si e' appena registrato e aggiunge entrambi al modello.
@@ -29,32 +34,32 @@ public class UserController
 		String idGit = principal.getAttribute("login");		//Prendo l'username dell'utente
 
 		/* Cerco l'utente */
-		Utente u = this.utenteService.getUtente(idGit);
-		Ruolo r;
+		Utente utente = this.utenteService.getUtente(idGit);
+		Ruolo ruolo;
 
 		/* Utente insesitente */
-		if(u==null)
+		if(utente==null)
 		{
 			/* Aggiungo utente e ruolo al database */
-			u = new Utente();
-			r = new Ruolo();
+			utente = new Utente();
+			ruolo = new Ruolo();
 
-			u.setUsername(idGit);
-			u.setMail(principal.getAttribute("email"));
-			r.setDefaultRole();
-			r.setUser(u);
+			utente.setUsername(idGit);
+			utente.setMail(principal.getAttribute("email"));
+			ruolo.setDefaultRole();
+			ruolo.setUtente(utente);
 
-			u = this.utenteService.save(u);
-			r = this.ruoloService.save(r);
+			utente = this.utenteService.save(utente);
+			ruolo = this.ruoloService.save(ruolo);
 		}
 		else //Utente già registrato
 		{
-			r = this.ruoloService.getRuolo(u);		//Prendo il ruolo
+			ruolo = this.ruoloService.getRuolo(utente);		//Prendo il ruolo
 		}
 
 		/* Aggiungo utente e ruolo al modello */
-		model.addAttribute("utente", u);
-		model.addAttribute("ruolo", r);
+		model.addAttribute("utente", utente);
+		model.addAttribute("ruolo", ruolo);
 	}
 
 	/* Prende la home dell'utente */
@@ -77,8 +82,12 @@ public class UserController
 
 	/* Prende il profilo dell'utente */
 	@RequestMapping(value = { "/user/profile" }, method = RequestMethod.GET)
-    public String profile()
+    public String profile(@AuthenticationPrincipal OAuth2User principal, Model model)
 	{
+		Utente utenteLoggato = sessionData.getLoggedUser(principal);
+		Ruolo ruolo = sessionData.getLoggedRole(principal);
+		model.addAttribute("utente", utenteLoggato);
+		model.addAttribute("ruolo", ruolo);
 		return "userProfile";
     }
 }

@@ -37,22 +37,22 @@ public class Ruolo
 		this.id = id;
 	}
 
-	public String getRole() 
+	public String getRuolo() 
 	{
 		return ruolo;
 	}
 
-	public void setRole(String role) 
+	public void setRuolo(String role) 
 	{
 		this.ruolo = role;
 	}
 
-	public Utente getUser() 
+	public Utente getUtente() 
 	{
 		return utente;
 	}
 
-	public void setUser(Utente user) 
+	public void setUtente(Utente user) 
 	{
 		this.utente = user;
 	}
