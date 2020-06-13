@@ -96,7 +96,7 @@ public class UserController
     }
 	
 	
-	@RequestMapping(value = { "/updateProfile" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/editProfile" }, method = RequestMethod.GET)
 	public String showFormUpdate(@AuthenticationPrincipal OAuth2User principal, Model model)
 	{
 		 Utente utente = sessionData.getLoggedUser(principal);
@@ -107,7 +107,7 @@ public class UserController
 	}
 	
 	 
-	 @RequestMapping(value = { "/updateProfile" }, method = RequestMethod.POST)
+	 @RequestMapping(value = { "/editProfile" }, method = RequestMethod.POST)
 	    public String updateUtente(HttpServletRequest request, @AuthenticationPrincipal OAuth2User principal, Model model)
 	 {
 		 
