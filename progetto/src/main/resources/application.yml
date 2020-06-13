@@ -5,7 +5,7 @@ spring:
         registration:
           github:
             client-id: caf5b2109f5652b31804
-            client-secret: 86bd03cfc685e3e73bf58b680a48e1a69cc4eeec
+            client-secret: 86bd03cfc685e3e73bf58b680a48e1a69cc4eeec 
 
 logging:
   level:
