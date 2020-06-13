@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import it.uniroma3.siw.progetto.controller.session.SessionData;
+import it.uniroma3.siw.progetto.controller.validator.UserValidator;
 import it.uniroma3.siw.progetto.model.Ruolo;
 import it.uniroma3.siw.progetto.model.Utente;
 import it.uniroma3.siw.progetto.service.RuoloService;
@@ -109,6 +110,8 @@ public class UserController
 	 @RequestMapping(value = { "/updateProfile" }, method = RequestMethod.POST)
 	    public String updateUtente(HttpServletRequest request, @AuthenticationPrincipal OAuth2User principal, Model model)
 	 {
+		 
+		 UserValidator validator = new UserValidator();
 		 Ruolo ruolo = sessionData.getLoggedRole(principal);
 		 Utente utente = sessionData.getLoggedUser(principal);
 		 
@@ -116,15 +119,27 @@ public class UserController
 		 String cognome = request.getParameter("cognomeInput");
 		 String mail = request.getParameter("mailInput");
 		 
-		 utente.setNome(nome);
-		 utente.setCognome(cognome);
-		 utente.setMail(mail);
+		 if(!validator.validate(request)) 
+		 {
+			 utente.setNome(nome);
+			 utente.setCognome(cognome);
+			 utente.setMail(mail);
+			 model.addAttribute("utente", utente);
+			 model.addAttribute("ruolo", ruolo);
+			 
+			 return "updateProfile";
+		 }	else {
+			 utente.setNome(nome);
+			 utente.setCognome(cognome);
+			 utente.setMail(mail);
+			 
+			 utenteService.save(utente);
+				
+			 model.addAttribute("utente", utente);
+			 model.addAttribute("ruolo", ruolo);
+		 }
 		 
 		 
-		 utenteService.save(utente);
-	
-		 model.addAttribute("utente", utente);
-		 model.addAttribute("ruolo", ruolo);
 		 
 		 return "userProfile";
 	 }
