@@ -96,8 +96,12 @@ public class UserController
 	
 	
 	@RequestMapping(value = { "/updateProfile" }, method = RequestMethod.GET)
-	public String showFormUpdate()
+	public String showFormUpdate(@AuthenticationPrincipal OAuth2User principal, Model model)
 	{
+		 Utente utente = sessionData.getLoggedUser(principal);
+		 model.addAttribute("utente", utente);
+
+
 		return "updateProfile";
 	}
 	
@@ -107,6 +111,7 @@ public class UserController
 	 {
 		 Ruolo ruolo = sessionData.getLoggedRole(principal);
 		 Utente utente = sessionData.getLoggedUser(principal);
+		 
 		 String nome = request.getParameter("nomeInput"); 
 		 String cognome = request.getParameter("cognomeInput");
 		 String mail = request.getParameter("mailInput");
