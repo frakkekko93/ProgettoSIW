@@ -7,10 +7,13 @@
 	<body>
 		<h1>Progetti Creati</h1>
 		<ul>
-			<c:forEach var="project" items="${projects}">
-				<li>Nome: ${project.nome}</li>
-				<li>Descrizione: ${project.descrizione}"</li>
-			</c:forEach>
+			<tr th:each="project: ${projects}">
+			    <ul>
+			    	<div><h2><td th:text="${project.nome}" /></h2></div>
+			    	<div><td th:text="${project.descrizione}" /></div>
+					<br>
+		    	</ul>
+			</tr>
 		</ul>
 		
 		<div class="footer"><a href="/userHome">Home utente</a></div>

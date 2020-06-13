@@ -37,11 +37,16 @@ public class ProjectController
     {
 		Utente utenteLoggato = sessionData.getLoggedUser(principal);
 		
-		Progetto project = new Progetto();
-        project.setNome((String)request.getParameter("nome"));
-        project.setDescrizione((String)request.getParameter("descrizione"));
-        project.setProprietario(utenteLoggato);
-        project = progettoService.save(project);
+		String comando = request.getParameter("button");
+		
+		if(comando.equals("invia"))
+		{
+			Progetto project = new Progetto();
+	        project.setNome((String)request.getParameter("nome"));
+	        project.setDescrizione((String)request.getParameter("descrizione"));
+	        project.setProprietario(utenteLoggato);
+	        project = progettoService.save(project);
+		}
         
         return "home";
     }
