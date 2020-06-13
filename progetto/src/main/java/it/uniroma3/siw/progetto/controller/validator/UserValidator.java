@@ -1,45 +1,40 @@
 package it.uniroma3.siw.progetto.controller.validator;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.validation.Errors;
-import org.springframework.validation.Validator;
 
-import it.uniroma3.siw.progetto.model.Utente;
-import it.uniroma3.siw.progetto.service.UtenteService;
 
-/**
- * Validator for User
- */
-@Component
-public class UserValidator implements Validator {
+import javax.servlet.http.HttpServletRequest;
 
-    final Integer MAX_NAME_LENGTH = 100;
-    final Integer MIN_NAME_LENGTH = 2;
 
-    @Autowired
-    UtenteService utenteService;
 
-    @Override
-    public void validate(Object o, Errors errors) {
-        Utente utente = (Utente) o;
-        String nome = utente.getNome().trim();
-        String cognome = utente.getCognome().trim();
+public class UserValidator {
 
-        if (nome.isEmpty())
-            errors.rejectValue("nome", "required");
-        else if (nome.length() < MIN_NAME_LENGTH || nome.length() > MAX_NAME_LENGTH)
-            errors.rejectValue("nome", "size");
+	public boolean validate(HttpServletRequest request) {
 
-        if (cognome.isEmpty())
-            errors.rejectValue("lastName", "required");
-        else if (cognome.length() < MIN_NAME_LENGTH || cognome.length() > MAX_NAME_LENGTH)
-            errors.rejectValue("lastName", "size");
-    }
+		boolean datiValidi = true;
+		
+		String nome = request.getParameter("nomeInput"); 
+		String cognome = request.getParameter("cognomeInput");
+		String mail = request.getParameter("mailInput");
 
-    @Override
-    public boolean supports(Class<?> clazz) {
-        return Utente.class.equals(clazz);
-    }
+		//controllo dei dati
+		if(nome == null || nome.isEmpty()) {
+			
+			datiValidi = false;
+			request.setAttribute("erroreNome", "Il nome è obbligatorio");
+		}
+
+		if(cognome == null || cognome.isEmpty()) {
+			datiValidi = false;
+			request.setAttribute("erroreCognome", "Il cognome è obbligatorio");
+		}
+		
+		if(mail == null || mail.isEmpty() || !mail.contains("@")) {
+			datiValidi = false;
+			request.setAttribute("erroreMail", "Indirizzo mail non valido");
+		}
+
+		return datiValidi;
+
+		}
 
 }
