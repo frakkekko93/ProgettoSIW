@@ -82,15 +82,43 @@ public class ProjectController
         return "projectList";
     }
 
-	/* Mostra la form di modifica del progetto */
-	@RequestMapping(value= {"/editProject"}, method = RequestMethod.POST)
-	public String showProjectUpdateForm(Model model, HttpServletRequest request)
+	/* Effettua un operazione sul progetto selezionato */
+	@RequestMapping(value= {"/editProject", "/show"}, method = RequestMethod.POST)
+	public String editProject(@AuthenticationPrincipal OAuth2User principal, Model model, HttpServletRequest request)
 	{
 		Progetto progetto = this.progettoService.getProgetto(Long.parseLong(request.getParameter("progetto")));
-
+		String comando = request.getParameter("submit");
+		String vista = "";
+		
 		model.addAttribute("progetto", progetto);
 
-		return "updateProject";
+		/* Rimanda alla pagina di visualizzazione del progetto */
+		if(comando.equals("show"))
+		{
+			vista = "project";
+		}
+		
+		/* Rimanda alla for di modifica del progetto */
+		if(comando.equals("update"))
+		{
+			vista = "updateProject";
+		}
+		
+		/* Rimanda alla form di condivisione del progetto */
+		if(comando.equals("share"))
+		{
+			vista = "shareProject";
+		}
+		
+		/* Elimina il progetto */
+		if(comando.equals("delete"))
+		{
+			this.progettoService.delete(progetto);
+		
+			vista = this.showProjectList(principal, model);
+		}
+		
+		return vista;
 	}
 
 	/* Aggiorna i dati di un progetto */
@@ -119,33 +147,12 @@ public class ProjectController
 			else
 			{
 				/* Salvo i campi inseriti dall'utente e torno alla form con gli errori */
-				model.addAttribute("progetto", progetto);
 				return "updateProject";
 			}
 		}
 
-		return this.showProjectList(principal, model);
-	}
-
-	/* Cancella un progetto */
-	@RequestMapping(value= {"/deleteProject"}, method = RequestMethod.POST)
-	public String delete(@AuthenticationPrincipal OAuth2User principal, Model model, HttpServletRequest request)
-	{
-		Progetto progetto = this.progettoService.getProgetto(Long.parseLong(request.getParameter("progetto")));
-
-		this.progettoService.delete(progetto);
-
-		return this.showProjectList(principal, model);
-	}
-	
-	@RequestMapping(value= {"/shareMyProject"}, method = RequestMethod.POST)
-	public String showProjectShareForm(@AuthenticationPrincipal OAuth2User principal, Model model, HttpServletRequest request)
-	{
-		Progetto progetto = this.progettoService.getProgetto(Long.parseLong(request.getParameter("progetto")));
-
 		model.addAttribute("progetto", progetto);
-
-		return "shareProject";
+		return "project";
 	}
 	
 	/*Condivi il progetto con un altro utente*/

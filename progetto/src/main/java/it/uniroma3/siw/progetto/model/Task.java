@@ -80,4 +80,24 @@ public class Task
 	{
 		this.dataCreazione = dataCreazione;
 	}
+
+	public Progetto getProgetto() 
+	{
+		return progetto;
+	}
+
+	public void setProgetto(Progetto progetto) 
+	{
+		this.progetto = progetto;
+	}
+
+	public List<Tag> getTags() 
+	{
+		return tags;
+	}
+
+	public void setTags(List<Tag> tags) 
+	{
+		this.tags = tags;
+	}
 }

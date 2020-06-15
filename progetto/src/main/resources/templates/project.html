@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="it" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+	<head>
+	<link rel="stylesheet" th:href="@{/css/tableListProject.css}"/>
+	    <meta charset="UTF-8">
+	    <title>Progetto</title>
+	</head>
+	<body>
+		<h1 th:text="${progetto.nome}"></h1>
+		<p th:text="${progetto.descrizione}"></p>
+		
+		<h2>Tasks</h2>
+		
+		<form th:action="@{'/editTasks' + '?progetto=' + ${progetto.id}}" method="POST">
+			<button type="submit" value="add" name="submit">aggiungi task</button>
+			<button type="submit" value="update" name="submit">aggiorna task</button>
+			<button type="submit" value="delete" name="submit">cancella task</button>
+		</form>
+		
+		<h2>Membri</h2>
+		
+		<form th:action="@{'/editProject' + '?progetto=' + ${progetto.id}}" method="POST">
+			<button type="submit" value="update" name="submit">aggiorna</button>
+			<button type="submit" value="share" name="submit">condividi</button>
+			<button type="submit" value="delete" name="submit">cancella</button>
+		</form>
+		
+		<div class="footer"><a href="/userHome">Home utente</a></div>
+	</body>
+</html>
