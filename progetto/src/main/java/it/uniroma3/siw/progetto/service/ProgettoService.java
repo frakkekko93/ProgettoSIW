@@ -9,12 +9,13 @@ import it.uniroma3.siw.progetto.model.Progetto;
 import it.uniroma3.siw.progetto.model.Utente;
 import it.uniroma3.siw.progetto.repository.ProgettoRepository;
 
+
 @Service
-public class ProgettoService 
+public class ProgettoService
 {
 	@Autowired
 	protected ProgettoRepository progettoRepository;
-	
+
 	/* Prende un progetto dal suo id */
 	public Progetto getProgetto(Long id)
 	{
@@ -22,23 +23,24 @@ public class ProgettoService
 
 		return result.orElse(null);
 	}
-	
+
 	/* Salva un progetto nel db */
 	@Transactional
 	public Progetto save(Progetto progetto)
 	{
 		return this.progettoRepository.save(progetto);
 	}
-	
+
 	/* Lista progetti creati da un utente */
 	public List<Progetto> findByProprietario(Utente proprietario)
 	{
 		return this.progettoRepository.findByProprietario(proprietario);
 	}
-	
-	/* Cancella un progetto */
-	public void delete(Progetto progetto)
-	{
-		this.progettoRepository.delete(progetto);
-	}
+
+	/* Condividi il progetto con un membro */
+	@Transactional
+    public Progetto condividiProgettoConUtente(Progetto progetto, Utente utente) {
+        progetto.aggiungiMembro(utente);
+        return this.progettoRepository.save(progetto);
+    }
 }

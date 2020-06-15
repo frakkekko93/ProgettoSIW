@@ -14,38 +14,41 @@ import it.uniroma3.siw.progetto.controller.validator.ProjectValidator;
 import it.uniroma3.siw.progetto.model.Progetto;
 import it.uniroma3.siw.progetto.model.Utente;
 import it.uniroma3.siw.progetto.service.ProgettoService;
+import it.uniroma3.siw.progetto.service.UtenteService;
 
 @Controller
-public class ProjectController 
+public class ProjectController
 {
 	@Autowired
 	protected ProgettoService progettoService;
-	
+
+	@Autowired UtenteService utenteService;
+
 	@Autowired
 	protected SessionData sessionData;
-	
+
 	/* Mostra la form per creare un nuovo progetto */
 	@RequestMapping(value = { "/new" }, method = RequestMethod.GET)
-    public String showProjectForm(HttpServletRequest request) 
+    public String showProjectForm(HttpServletRequest request)
     {
         return "insertProject";
     }
-	
+
 	/* Registra i dati del nuovo progetto */
 	@RequestMapping(value = { "/new" }, method = RequestMethod.POST)
-    public String registerProject(@AuthenticationPrincipal OAuth2User principal, HttpServletRequest request, Model model) 
+    public String registerProject(@AuthenticationPrincipal OAuth2User principal, HttpServletRequest request, Model model)
     {
 		Utente utenteLoggato = sessionData.getLoggedUser(principal);
-		
+
 		String comando = request.getParameter("button");
 		String nome = request.getParameter("nome");
 		String descrizione = request.getParameter("descrizione");
-		
+
 		/* Se non e' stata annullata l'operazione */
 		if(comando.equals("invia"))
 		{
 			ProjectValidator validator = new ProjectValidator();
-			
+
 			/* Se i dati sono validi */
 			if(validator.validate(request))
 			{
@@ -64,32 +67,32 @@ public class ProjectController
 				return "insertProject";
 			}
 		}
-        
+
         return "home";
     }
-	
+
 	/* Visualizza la lista dei progetti dell'utente loggato */
 	@RequestMapping(value = { "/myProjects" }, method = RequestMethod.GET)
-    public String showProjectList(@AuthenticationPrincipal OAuth2User principal, Model model) 
+    public String showProjectList(@AuthenticationPrincipal OAuth2User principal, Model model)
     {
 		Utente utenteLoggato = sessionData.getLoggedUser(principal);
-		
+
 		List<Progetto> projects = this.progettoService.findByProprietario(utenteLoggato);
 		model.addAttribute("projects", projects);
         return "projectList";
     }
-	
+
 	/* Mostra la form di modifica del progetto */
 	@RequestMapping(value= {"/editProject"}, method = RequestMethod.POST)
 	public String showProjectUpdateForm(Model model, HttpServletRequest request)
 	{
 		Progetto progetto = this.progettoService.getProgetto(Long.parseLong(request.getParameter("progetto")));
-		
+
 		model.addAttribute("progetto", progetto);
-		
+
 		return "updateProject";
 	}
-	
+
 	/* Aggiorna i dati di un progetto */
 	@RequestMapping(value= {"/updateProject"}, method = RequestMethod.POST)
 	public String updateProject(@AuthenticationPrincipal OAuth2User principal, Model model, HttpServletRequest request)
@@ -98,15 +101,15 @@ public class ProjectController
 		String nome = request.getParameter("nome");
 		String descrizione = request.getParameter("descrizione");
 		String comando = request.getParameter("button");
-		
+
 		/* Se non e' stata annullata l'operazione */
 		if(comando.equals("aggiorna"))
 		{
 			ProjectValidator validator = new ProjectValidator();
-			
+
 			progetto.setNome(nome);
 			progetto.setDescrizione(descrizione);
-			
+
 			/* Se i dati sono validi */
 			if(validator.validate(request))
 			{
@@ -120,18 +123,18 @@ public class ProjectController
 				return "updateProject";
 			}
 		}
-			
+
 		return this.showProjectList(principal, model);
 	}
-	
+
 	/* Cancella un progetto */
 	@RequestMapping(value= {"/deleteProject"}, method = RequestMethod.POST)
 	public String delete(@AuthenticationPrincipal OAuth2User principal, Model model, HttpServletRequest request)
 	{
 		Progetto progetto = this.progettoService.getProgetto(Long.parseLong(request.getParameter("progetto")));
-		
+
 		this.progettoService.delete(progetto);
-		
+
 		return this.showProjectList(principal, model);
 	}
 }

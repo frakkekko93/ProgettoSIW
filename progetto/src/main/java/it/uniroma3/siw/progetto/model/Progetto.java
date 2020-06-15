@@ -49,7 +49,13 @@ public class Progetto
 		this.tags = new ArrayList<>();
 		this.dataInizio = LocalDateTime.now();
 	}
-
+	
+	public void aggiungiMembro(Utente utente) 
+	{
+		if(!this.membri.contains(utente))
+			this.membri.add(utente);
+	}
+	
 	/* Setters and getters */
 	public long getId()
 	{
