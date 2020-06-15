@@ -11,11 +11,25 @@
 		
 		<h2>Tasks</h2>
 		
+		<table style="width:100%">
+			<tr>
+			    <th>Nome</th>
+			    <th>Descrizione</th>
+			    <th>Azioni</th>
+			</tr>	
+			<tr th:each="task: ${progetto.tasks}">
+			    <td th:text="${task.nome}" id="nomeTask"></td>
+			    <td th:text="${task.descrizione}"></td>
+			    <td><form th:action="@{'/editTasks' + '?progetto=' + ${progetto.id}}" method="POST">
+						<button type="submit" value="update" name="submit">aggiorna task</button>
+						<button type="submit" value="delete" name="submit">cancella task</button>
+					</form>
+	    		</td>
+			</tr>
+		</table>
 		<form th:action="@{'/editTasks' + '?progetto=' + ${progetto.id}}" method="POST">
 			<button type="submit" value="add" name="submit">aggiungi task</button>
-			<button type="submit" value="update" name="submit">aggiorna task</button>
-			<button type="submit" value="delete" name="submit">cancella task</button>
-		</form>
+		</form>		
 		
 		<h2>Membri</h2>
 		

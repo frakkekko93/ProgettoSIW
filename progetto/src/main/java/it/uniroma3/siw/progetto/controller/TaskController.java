@@ -63,8 +63,6 @@ public class TaskController
 		String comando = request.getParameter("button");
 		String nome = request.getParameter("nome");
 		String descrizione = request.getParameter("descrizione");
-
-		model.addAttribute("progetto", progetto);
 		
 		/* Se non e' stata annullata l'operazione */
 		if(comando.equals("invia"))
@@ -90,6 +88,45 @@ public class TaskController
 			}
 		}
 
+		model.addAttribute("progetto", progetto);
+        return "project";
+	}
+	
+	/* Aggiorna i dati di un progetto */
+	@RequestMapping(value= {"/updateTask"}, method = RequestMethod.POST)
+	public String updateTask(@AuthenticationPrincipal OAuth2User principal, Model model, HttpServletRequest request)
+	{
+		Progetto progetto = this.progettoService.getProgetto(Long.parseLong(request.getParameter("progetto")));
+		
+		String comando = request.getParameter("button");
+		String nome = request.getParameter("nome");
+		String descrizione = request.getParameter("descrizione");
+		
+		/* Se non e' stata annullata l'operazione */
+		if(comando.equals("invia"))
+		{
+			TaskValidator validator = new TaskValidator();
+
+			/* Se i dati sono validi */
+			if(validator.validate(request))
+			{
+				/* Aggiungo il task al progetto */
+				Task task = new Task();
+				task.setNome(nome);
+				task.setDescrizione(descrizione);
+				this.taskService.save(task);
+				this.taskService.addTask(progetto, task);
+			}
+			else
+			{
+				/* Salvo i campi inseriti dall'utente e torno alla form */
+				model.addAttribute("nomeText", nome);
+				model.addAttribute("descrizioneText", descrizione);
+				return "addTask";
+			}
+		}
+
+		model.addAttribute("progetto", progetto);
         return "project";
 	}
 }

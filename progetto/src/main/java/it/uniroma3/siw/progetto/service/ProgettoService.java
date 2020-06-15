@@ -45,7 +45,8 @@ public class ProgettoService
 
 	/* Condividi il progetto con un membro */
 	@Transactional
-    public Progetto condividiProgettoConUtente(Progetto progetto, Utente utente) {
+    public Progetto condividiProgettoConUtente(Progetto progetto, Utente utente) 
+	{
         progetto.aggiungiMembro(utente);
         return this.progettoRepository.save(progetto);
     }
