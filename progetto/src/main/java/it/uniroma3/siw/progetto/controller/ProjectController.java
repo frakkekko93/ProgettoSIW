@@ -148,8 +148,6 @@ public class ProjectController
 		return "shareProject";
 	}
 	
-	
-	
 	/*Condivi il progetto con un altro utente*/
 	@RequestMapping(value = { "/share" }, method = RequestMethod.POST)
 	public String share(HttpServletRequest request, @AuthenticationPrincipal OAuth2User principal, Model model)

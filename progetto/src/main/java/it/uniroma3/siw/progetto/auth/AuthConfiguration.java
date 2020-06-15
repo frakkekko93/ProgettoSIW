@@ -6,6 +6,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+//import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -20,11 +21,16 @@ public class AuthConfiguration extends WebSecurityConfigurerAdapter
 	{		
 		http.authorizeRequests()
 		    .antMatchers("/", "/error", "/webjars/**").permitAll()
-			.antMatchers(HttpMethod.GET, "/", "/index").permitAll()
+			.antMatchers("/", "/index").permitAll()
 			.antMatchers(HttpMethod.GET, "/admin").hasAnyAuthority("ADMIN")
 			.anyRequest().authenticated()
-			.and().csrf().disable()
-			.oauth2Login();
+			.and()
+			.csrf().disable()
+			.oauth2Login()
+			.and().logout()
+            .logoutUrl("/logout")
+            .logoutSuccessUrl("/"); 
+//			.and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/");
 	}
 	
 	/* Configurazione delle query per recuperare i ruoli degli utenti */
