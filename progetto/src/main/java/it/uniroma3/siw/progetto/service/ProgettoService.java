@@ -1,6 +1,8 @@
 package it.uniroma3.siw.progetto.service;
 
 import java.util.List;
+import java.util.Optional;
+
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,14 @@ public class ProgettoService
 {
 	@Autowired
 	protected ProgettoRepository progettoRepository;
+	
+	/* Prende un progetto dal suo id */
+	public Progetto getProgetto(Long id)
+	{
+		Optional<Progetto> result = this.progettoRepository.findById(id);
+
+		return result.orElse(null);
+	}
 	
 	/* Salva un progetto nel db */
 	@Transactional

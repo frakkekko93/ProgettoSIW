@@ -78,4 +78,15 @@ public class ProjectController
 		model.addAttribute("projects", projects);
         return "projectList";
     }
+	
+	/* Aggiorna i dati di un progetto */
+	@RequestMapping(value= {"/editProject"}, method = RequestMethod.POST)
+	public String showProjectUpdateForm(@AuthenticationPrincipal OAuth2User principal, Model model, HttpServletRequest request)
+	{
+		Progetto progetto = this.progettoService.getProgetto(Long.parseLong(request.getParameter("progetto")));
+		
+		model.addAttribute("progetto", progetto);
+		
+		return "updateProject";
+	}
 }
