@@ -36,6 +36,12 @@ public class ProgettoService
 	{
 		return this.progettoRepository.findByProprietario(proprietario);
 	}
+	
+	/* Lista progetti condivisi con me */
+	public List<Progetto> findByMembri(Utente membri)
+	{
+		return this.progettoRepository.findByMembri(membri);
+	}
 
 	/* Condividi il progetto con un membro */
 	@Transactional

@@ -180,4 +180,17 @@ public class ProjectController
 		
 		return this.showProjectList(principal, model);
 	}
+	
+	/* Visualizza la lista dei progetti condivisi con me */
+	@RequestMapping(value = { "/shareProjects" }, method = RequestMethod.GET)
+    public String showProjectshareWithMeList(@AuthenticationPrincipal OAuth2User principal, Model model)
+    {
+		Utente utenteLoggato = sessionData.getLoggedUser(principal);
+
+		List<Progetto> projects = this.progettoService.findByMembri(utenteLoggato);
+		model.addAttribute("projects", projects);
+        
+		return "shareWithMeList";
+    }
+	
 }
