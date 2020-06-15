@@ -14,12 +14,14 @@ public class ProgettoService
 	@Autowired
 	protected ProgettoRepository progettoRepository;
 	
+	/* Salva un progetto nel db */
 	@Transactional
 	public Progetto save(Progetto progetto)
 	{
 		return this.progettoRepository.save(progetto);
 	}
 	
+	/* Lista progetti creati da un utente */
 	public List<Progetto> findByProprietario(Utente proprietario)
 	{
 		return this.progettoRepository.findByProprietario(proprietario);

@@ -31,8 +31,6 @@ public class UtenteService
 		return result.orElse(null);
 	}
 
-
-
 	/* Memorizza un utente nel db */
 	@Transactional
 	public Utente save(Utente r)

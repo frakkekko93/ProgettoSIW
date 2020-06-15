@@ -49,6 +49,7 @@ public class ProjectController
 			/* Se i dati sono validi */
 			if(validator.validate(request))
 			{
+				/* Creo il progetto e lo salvo nel db */
 				Progetto project = new Progetto();
 		        project.setNome((String)request.getParameter("nome"));
 		        project.setDescrizione((String)request.getParameter("descrizione"));
@@ -57,6 +58,7 @@ public class ProjectController
 			}
 			else
 			{
+				/* Salvo i campi inseriti dall'utente e torno alla form */
 				model.addAttribute("nomeText", nome);
 				model.addAttribute("descrizioneText", descrizione);
 				return "insertProject";
@@ -73,9 +75,7 @@ public class ProjectController
 		Utente utenteLoggato = sessionData.getLoggedUser(principal);
 		
 		List<Progetto> projects = this.progettoService.findByProprietario(utenteLoggato);
-		
 		model.addAttribute("projects", projects);
-        
         return "projectList";
     }
 }

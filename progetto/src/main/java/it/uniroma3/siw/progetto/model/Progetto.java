@@ -41,7 +41,7 @@ public class Progetto
 	@ManyToMany(fetch=FetchType.LAZY)
 	private List<Tag> tags;
 	
-	/* Costruttori */
+	/* Costruttore */
 	public Progetto()
 	{
 		this.membri = new ArrayList<>();

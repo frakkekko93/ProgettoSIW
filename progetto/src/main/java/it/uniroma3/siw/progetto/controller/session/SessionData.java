@@ -15,8 +15,8 @@ import it.uniroma3.siw.progetto.repository.UtenteRepository;
 
 @Component
 @Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
-public class SessionData {
-
+public class SessionData 
+{
 	private Utente utente;
 	
 	private Ruolo ruolo;
@@ -27,7 +27,7 @@ public class SessionData {
 	@Autowired
 	private UtenteRepository utenteRepository;
 	
-	
+	/* Ritorna il ruolo dell'utente loggato nella sessione */
 	public Ruolo getLoggedRole(@AuthenticationPrincipal OAuth2User principal) 
 	{
         if (this.ruolo == null)
@@ -35,7 +35,7 @@ public class SessionData {
         return this.ruolo;
     }
 	
-	
+	/* Ritorna l'utente loggato nella sessione */
 	public Utente getLoggedUser(@AuthenticationPrincipal OAuth2User principal) 
 	{
         if (this.utente == null)
@@ -43,7 +43,7 @@ public class SessionData {
         return this.utente;
     }
 	
-	
+	/* Aggiorna i dati di ruolo e utente loggati nella sessione */
 	private void update(@AuthenticationPrincipal OAuth2User principal) 
 	{
 		

@@ -33,7 +33,7 @@ public class Task
 	@ManyToMany(fetch=FetchType.LAZY)
 	private List<Tag> tags;
 	
-	/* Costruttori */
+	/* Costruttore */
 	public Task() 
 	{
 		this.tags = new ArrayList<>();

@@ -9,5 +9,6 @@ import it.uniroma3.siw.progetto.model.Utente;
 @Repository
 public interface ProgettoRepository extends CrudRepository<Progetto, Long>
 {
+	/* Lista dei progetti creati da un utente */
 	public List<Progetto> findByProprietario(Utente proprietario);
 }

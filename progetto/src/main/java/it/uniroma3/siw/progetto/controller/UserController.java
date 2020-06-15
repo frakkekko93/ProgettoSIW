@@ -95,54 +95,53 @@ public class UserController
 		return "userProfile";
     }
 	
-	
+	/* Mostra la form di aggiornamento del profilo */
 	@RequestMapping(value = { "/editProfile" }, method = RequestMethod.GET)
 	public String showFormUpdate(@AuthenticationPrincipal OAuth2User principal, Model model)
 	{
-		 Utente utente = sessionData.getLoggedUser(principal);
-		 model.addAttribute("utente", utente);
-
+		Utente utente = sessionData.getLoggedUser(principal);
+		model.addAttribute("utente", utente);
 
 		return "updateProfile";
 	}
 	
-	 
-	 @RequestMapping(value = { "/editProfile" }, method = RequestMethod.POST)
-	    public String updateUtente(HttpServletRequest request, @AuthenticationPrincipal OAuth2User principal, Model model)
-	 {
-		 
-		 UserValidator validator = new UserValidator();
-		 Ruolo ruolo = sessionData.getLoggedRole(principal);
-		 Utente utente = sessionData.getLoggedUser(principal);
-		 
-		 String nome = request.getParameter("nomeInput"); 
-		 String cognome = request.getParameter("cognomeInput");
-		 String mail = request.getParameter("mailInput");
-		 
-		 if(!validator.validate(request)) 
-		 {
-			 utente.setNome(nome);
-			 utente.setCognome(cognome);
-			 utente.setMail(mail);
-			 model.addAttribute("utente", utente);
-			 model.addAttribute("ruolo", ruolo);
+	/* Aggiorna il profilo dell'utente */ 
+	@RequestMapping(value = { "/editProfile" }, method = RequestMethod.POST)
+	public String updateUtente(HttpServletRequest request, @AuthenticationPrincipal OAuth2User principal, Model model)
+	{
+		UserValidator validator = new UserValidator();
+		Ruolo ruolo = sessionData.getLoggedRole(principal);
+		Utente utente = sessionData.getLoggedUser(principal);
+		
+		String comando = request.getParameter("submit");
+		String nome = request.getParameter("nomeInput"); 
+		String cognome = request.getParameter("cognomeInput");
+	 	String mail = request.getParameter("mailInput");
+	 	
+	 	if(comando.equals("invia"))
+	 	{
+	 		/* Valido i dati inseriti */
+			if(!validator.validate(request)) 
+			{
+				/* Dati non validi, aggiorno le informazioni dell'utente nel modello */
+				utente.setNome(nome);
+				utente.setCognome(cognome);
+				utente.setMail(mail);
 			 
-			 return "updateProfile";
-		 }	else {
-			 utente.setNome(nome);
-			 utente.setCognome(cognome);
-			 utente.setMail(mail);
-			 
-			 utenteService.save(utente);
-				
-			 model.addAttribute("utente", utente);
-			 model.addAttribute("ruolo", ruolo);
-		 }
-		 
-		 
-		 
-		 return "userProfile";
-	 }
+			 	return "updateProfile";
+		 	}	
+		 	else 
+		 	{
+		 		/* Dati validi, aggiorno le informazioni dell'utente nel db e nel modello */
+			 	utente.setNome(nome);
+			 	utente.setCognome(cognome);
+			 	utente.setMail(mail);	 
+			 	utenteService.save(utente);
+		 	}
+	 	}
 	 
-	 
+	 	model.addAttribute("utente", utente);
+	 	model.addAttribute("ruolo", ruolo);
+	 	return "userProfile";
+	}
 }
