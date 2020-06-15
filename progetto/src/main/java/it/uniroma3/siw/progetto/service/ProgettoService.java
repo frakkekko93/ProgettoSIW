@@ -43,4 +43,11 @@ public class ProgettoService
         progetto.aggiungiMembro(utente);
         return this.progettoRepository.save(progetto);
     }
+	
+	/* Elimina progetto */
+	@Transactional
+	public void delete(Progetto progetto) 
+	{
+		this.progettoRepository.delete(progetto);
+	}
 }

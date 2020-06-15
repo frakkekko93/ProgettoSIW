@@ -137,4 +137,47 @@ public class ProjectController
 
 		return this.showProjectList(principal, model);
 	}
+	
+	@RequestMapping(value= {"/shareMyProject"}, method = RequestMethod.POST)
+	public String showProjectShareForm(@AuthenticationPrincipal OAuth2User principal, Model model, HttpServletRequest request)
+	{
+		Progetto progetto = this.progettoService.getProgetto(Long.parseLong(request.getParameter("progetto")));
+
+		model.addAttribute("progetto", progetto);
+
+		return "shareProject";
+	}
+	
+	
+	
+	/*Condivi il progetto con un altro utente*/
+	@RequestMapping(value = { "/share" }, method = RequestMethod.POST)
+	public String share(HttpServletRequest request, @AuthenticationPrincipal OAuth2User principal, Model model)
+	{
+		Progetto progetto = this.progettoService.getProgetto(Long.parseLong(request.getParameter("progetto")));
+				
+		String membro = request.getParameter("membroInput");
+		
+		String comando = request.getParameter("submit");
+		
+		Utente utente = utenteService.getUtente(membro);
+		
+		if(comando.equals("condividi")) 
+		{
+			
+			if(utente == null || membro.isEmpty())
+			{
+				request.setAttribute("nonEsiste", "L'utente digitato non esiste");
+				model.addAttribute("progetto", progetto);
+				return "shareProject";
+			}
+			else 
+			{
+				progettoService.condividiProgettoConUtente(progetto, utente);
+			}
+		}
+		
+		
+		return this.showProjectList(principal, model);
+	}
 }
