@@ -6,15 +6,29 @@
 	</head>
 	<body>
 		<h1>Progetti Creati</h1>
-		<ul>
+		
+		<table style="width:100%">
+			<tr>
+			    <th>Progetto</th>
+			    <th>Descrizione</th> 
+			    <th>Azioni</th>
+			</tr>	
 			<tr th:each="project: ${projects}">
-			    <ul>
-			    	<div><h2><td th:text="${project.nome}" /></h2></div>
-			    	<div><td th:text="${project.descrizione}" /></div>
-					<br>
-		    	</ul>
+			    <td th:text="${project.nome}" id="nomeProject"></td>
+			    <td th:text="${project.descrizione}"></td>
+			    <td>
+			    	<form th:action="@{'/editProject' + '?progetto=' + ${project.id}}" method="POST">
+			    		<button type="submit" value="aggiorna" name="submit">aggiorna</button>
+			    	</form>
+			    	<form th:action="@{'/shareProject' + '?progetto=' + ${project.id}}" method="POST">
+			    		<button type="submit" value="share" name="submit">condividi</button>
+			    	</form>
+			    	<form th:action="@{'/deleteProject' + '?progetto=' + ${project.id}}" method="POST">
+			    		<button type="submit" value="delete" name="submit">cancella</button>
+			    	</form>
+		    	</td>
 			</tr>
-		</ul>
+		</table>
 		<div class="footer"><a href="/userHome">Home utente</a></div>
 	</body>
 </html>

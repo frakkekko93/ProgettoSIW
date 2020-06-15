@@ -17,38 +17,38 @@ import it.uniroma3.siw.progetto.service.ProgettoService;
 import it.uniroma3.siw.progetto.service.UtenteService;
 
 @Controller
-public class ProjectController 
+public class ProjectController
 {
 	@Autowired
 	protected ProgettoService progettoService;
-	
+
 	@Autowired UtenteService utenteService;
-	
+
 	@Autowired
 	protected SessionData sessionData;
-	
+
 	/* Mostra la form per creare un nuovo progetto */
 	@RequestMapping(value = { "/new" }, method = RequestMethod.GET)
-    public String showProjectForm(HttpServletRequest request) 
+    public String showProjectForm(HttpServletRequest request)
     {
         return "insertProject";
     }
-	
+
 	/* Registra i dati del nuovo progetto */
 	@RequestMapping(value = { "/new" }, method = RequestMethod.POST)
-    public String registerProject(@AuthenticationPrincipal OAuth2User principal, HttpServletRequest request, Model model) 
+    public String registerProject(@AuthenticationPrincipal OAuth2User principal, HttpServletRequest request, Model model)
     {
 		Utente utenteLoggato = sessionData.getLoggedUser(principal);
-		
+
 		String comando = request.getParameter("button");
 		String nome = request.getParameter("nome");
 		String descrizione = request.getParameter("descrizione");
-		
+
 		/* Se non e' stata annullata l'operazione */
 		if(comando.equals("invia"))
 		{
 			ProjectValidator validator = new ProjectValidator();
-			
+
 			/* Se i dati sono validi */
 			if(validator.validate(request))
 			{
@@ -67,46 +67,29 @@ public class ProjectController
 				return "insertProject";
 			}
 		}
-        
+
         return "home";
     }
-	
+
 	/* Visualizza la lista dei progetti dell'utente loggato */
 	@RequestMapping(value = { "/myProjects" }, method = RequestMethod.GET)
-    public String showProjectList(@AuthenticationPrincipal OAuth2User principal, Model model) 
+    public String showProjectList(@AuthenticationPrincipal OAuth2User principal, Model model)
     {
 		Utente utenteLoggato = sessionData.getLoggedUser(principal);
-		
+
 		List<Progetto> projects = this.progettoService.findByProprietario(utenteLoggato);
 		model.addAttribute("projects", projects);
         return "projectList";
     }
-	
-	
-	/* Mostra la form per creare un nuovo progetto */
-	@RequestMapping(value = { "/shareMyProject" }, method = RequestMethod.GET)
-    public String showShareProjectForm(HttpServletRequest request) 
-    {
-        return "shareProject";
-    }
-	
-	
-	/*Condivi il progetto con un altro utente*/
-	@RequestMapping(value = { "/shareMyProject" }, method = RequestMethod.POST)
-	public String share(HttpServletRequest request, @AuthenticationPrincipal OAuth2User principal, Model model)
+
+	/* Aggiorna i dati di un progetto */
+	@RequestMapping(value= {"/editProject"}, method = RequestMethod.POST)
+	public String showProjectUpdateForm(@AuthenticationPrincipal OAuth2User principal, Model model, HttpServletRequest request)
 	{
-		String membro = request.getParameter("membroInput");
-		
-		Utente utente = utenteService.getUtente(membro);
-		
-		if(utente == null || membro.isEmpty())
-		{
-			request.setAttribute("nonEsiste", "L'utente digitato non esiste");
-			return "shareProject";
-		}
-		
-		progettoService.condividiProgettoConUtente(progetto, utente);
-		
-		return "myProjects";
+		Progetto progetto = this.progettoService.getProgetto(Long.parseLong(request.getParameter("progetto")));
+
+		model.addAttribute("progetto", progetto);
+
+		return "updateProject";
 	}
 }
