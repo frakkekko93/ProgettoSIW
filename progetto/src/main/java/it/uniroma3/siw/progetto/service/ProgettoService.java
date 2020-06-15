@@ -2,7 +2,6 @@ package it.uniroma3.siw.progetto.service;
 
 import java.util.List;
 import java.util.Optional;
-
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,5 +34,11 @@ public class ProgettoService
 	public List<Progetto> findByProprietario(Utente proprietario)
 	{
 		return this.progettoRepository.findByProprietario(proprietario);
+	}
+	
+	/* Cancella un progetto */
+	public void delete(Progetto progetto)
+	{
+		this.progettoRepository.delete(progetto);
 	}
 }
