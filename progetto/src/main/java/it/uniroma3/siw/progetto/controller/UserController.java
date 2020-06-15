@@ -1,5 +1,6 @@
 package it.uniroma3.siw.progetto.controller;
 
+
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -39,7 +40,7 @@ public class UserController
 		Utente utente = this.utenteService.getUtente(idGit);
 		Ruolo ruolo;
 
-		/* Utente insesitente */
+		/* Utente inesistente */
 		if(utente==null)
 		{
 			/* Aggiungo utente e ruolo al database */
@@ -68,6 +69,7 @@ public class UserController
 	@RequestMapping(value = { "/userHome" }, method = RequestMethod.GET)
     public String home(@AuthenticationPrincipal OAuth2User principal, Model model)
 	{
+		
 		/* Controllo che l'utente sia loggato */
 		if(principal != null)
 		{
@@ -77,6 +79,13 @@ public class UserController
 				/* Eventualmente lo creo (se non esiste nel db) e lo aggiungo al modello */
 				addUser(principal, model);
 			}
+		}
+		
+		/*Se il ruolo è ADMIN mi rimanda alla pagina dell'admin*/
+		Ruolo ruolo = sessionData.getLoggedRole(principal);
+		if(ruolo.getRuolo().equals("ADMIN")) 
+		{
+			return "admin";
 		}
 
 		return "home";
@@ -142,4 +151,6 @@ public class UserController
 	 	model.addAttribute("ruolo", ruolo);
 	 	return "userProfile";
 	}
+	
+	
 }
