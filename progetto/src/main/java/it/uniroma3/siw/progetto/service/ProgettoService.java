@@ -8,6 +8,7 @@ import it.uniroma3.siw.progetto.model.Progetto;
 import it.uniroma3.siw.progetto.model.Utente;
 import it.uniroma3.siw.progetto.repository.ProgettoRepository;
 
+
 @Service
 public class ProgettoService 
 {
@@ -26,4 +27,11 @@ public class ProgettoService
 	{
 		return this.progettoRepository.findByProprietario(proprietario);
 	}
+	
+	/* Condividi il progetto con un membro */
+	@Transactional
+    public Progetto condividiProgettoConUtente(Progetto progetto, Utente utente) {
+        progetto.aggiungiMembro(utente);
+        return this.progettoRepository.save(progetto);
+    }
 }

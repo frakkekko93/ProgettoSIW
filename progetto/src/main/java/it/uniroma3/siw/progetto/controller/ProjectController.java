@@ -14,12 +14,15 @@ import it.uniroma3.siw.progetto.controller.validator.ProjectValidator;
 import it.uniroma3.siw.progetto.model.Progetto;
 import it.uniroma3.siw.progetto.model.Utente;
 import it.uniroma3.siw.progetto.service.ProgettoService;
+import it.uniroma3.siw.progetto.service.UtenteService;
 
 @Controller
 public class ProjectController 
 {
 	@Autowired
 	protected ProgettoService progettoService;
+	
+	@Autowired UtenteService utenteService;
 	
 	@Autowired
 	protected SessionData sessionData;
@@ -78,4 +81,32 @@ public class ProjectController
 		model.addAttribute("projects", projects);
         return "projectList";
     }
+	
+	
+	/* Mostra la form per creare un nuovo progetto */
+	@RequestMapping(value = { "/shareMyProject" }, method = RequestMethod.GET)
+    public String showShareProjectForm(HttpServletRequest request) 
+    {
+        return "shareProject";
+    }
+	
+	
+	/*Condivi il progetto con un altro utente*/
+	@RequestMapping(value = { "/shareMyProject" }, method = RequestMethod.POST)
+	public String share(HttpServletRequest request, @AuthenticationPrincipal OAuth2User principal, Model model)
+	{
+		String membro = request.getParameter("membroInput");
+		
+		Utente utente = utenteService.getUtente(membro);
+		
+		if(utente == null || membro.isEmpty())
+		{
+			request.setAttribute("nonEsiste", "L'utente digitato non esiste");
+			return "shareProject";
+		}
+		
+		progettoService.condividiProgettoConUtente(progetto, utente);
+		
+		return "myProjects";
+	}
 }
