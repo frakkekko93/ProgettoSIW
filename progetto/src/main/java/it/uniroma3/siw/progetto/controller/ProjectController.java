@@ -31,6 +31,7 @@ public class ProjectController
 	
 	@Autowired
 	protected TaskService taskService;
+	
 
 	/* Mostra la form per creare un nuovo progetto */
 	@RequestMapping(value = { "/new" }, method = RequestMethod.GET)
@@ -129,6 +130,12 @@ public class ProjectController
 			this.progettoService.delete(progetto);
 		
 			vista = this.showProjectList(principal, model);
+		}
+		
+		/*Aggiungi tag al progetto*/
+		if(comando.equals("addTag"))
+		{
+			vista = "addTag";
 		}
 		
 		return vista;
