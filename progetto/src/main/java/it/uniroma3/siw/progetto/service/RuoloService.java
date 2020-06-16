@@ -29,4 +29,9 @@ public class RuoloService
 	{
 		return this.ruoloRepository.save(r);
 	}
+	
+	public void delete(Ruolo r)
+	{
+		this.ruoloRepository.delete(r);
+	}
 }
