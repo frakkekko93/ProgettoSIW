@@ -81,6 +81,28 @@
 		<button type="submit" value="share" name="submit">condividi</button>
 		</form>
 		
+		
+		<h2>TAG</h2>
+		<table style="width:100%">
+		<thead>
+			<tr>
+			    <th>Nome</th>
+			    <th>Colore</th>
+			    <th>Descrizione</th>
+			</tr>
+			</thead>
+			<tbody>	
+			<tr th:each="tag: ${progetto.tags}">
+			    <td th:text="${tag.nome}" id="nomeTag"></td>
+			    <td th:text="${tag.descrizione}"></td>
+			    <td th:text="${tag.colore}"></td>
+			</tr>
+			</tbody>
+		</table>
+		<form th:action="@{'/editProject' + '?progetto=' + ${progetto.id}}" method="POST">
+		<button type="submit" value="addTag" name="submit">aggiungi</button>
+		</form>
+		
 		<div class="footer"><a href="/userHome">Home utente</a></div>
 	</body>
 </html>
