@@ -6,7 +6,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-//import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -30,7 +29,6 @@ public class AuthConfiguration extends WebSecurityConfigurerAdapter
 			.and().logout()
             .logoutUrl("/logout")
             .logoutSuccessUrl("/"); 
-//			.and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/");
 	}
 	
 	/* Configurazione delle query per recuperare i ruoli degli utenti */

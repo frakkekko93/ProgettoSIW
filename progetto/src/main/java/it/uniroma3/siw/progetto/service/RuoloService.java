@@ -15,7 +15,6 @@ public class RuoloService
 	protected RuoloRepository ruoloRepository;
 
 	/* Trova un ruolo in base all'username dell'utente che vi è associato */
-	@Transactional
 	public Ruolo getRuolo(Utente u)
 	{
 		Optional<Ruolo> r = this.ruoloRepository.findByUtente(u);
@@ -30,6 +29,8 @@ public class RuoloService
 		return this.ruoloRepository.save(r);
 	}
 	
+	/* Cancella un ruolo dal db */
+	@Transactional
 	public void delete(Ruolo r)
 	{
 		this.ruoloRepository.delete(r);

@@ -14,5 +14,4 @@ public interface ProgettoRepository extends CrudRepository<Progetto, Long>
 	
 	/* Lista dei progetti condivisi con me */
 	public List<Progetto> findByMembri(Utente membri);
-
 }

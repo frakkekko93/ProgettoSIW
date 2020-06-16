@@ -6,12 +6,10 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
-
 import it.uniroma3.siw.progetto.model.Ruolo;
 import it.uniroma3.siw.progetto.model.Utente;
 import it.uniroma3.siw.progetto.repository.RuoloRepository;
 import it.uniroma3.siw.progetto.repository.UtenteRepository;
-
 
 @Component
 @Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
@@ -45,11 +43,8 @@ public class SessionData
 	
 	/* Aggiorna i dati di ruolo e utente loggati nella sessione */
 	private void update(@AuthenticationPrincipal OAuth2User principal) 
-	{
-		
+	{	
 		this.utente = utenteRepository.findByUsername(principal.getAttribute("login")).get();
-		this.ruolo = ruoloRepository.findByUtente(utente).get();
-		
+		this.ruolo = ruoloRepository.findByUtente(utente).get();	
     }
-
 }

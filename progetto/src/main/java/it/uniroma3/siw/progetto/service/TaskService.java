@@ -34,7 +34,6 @@ public class TaskService
 	}
 	
 	/* Prende un task in base al suo id */
-	@Transactional
 	public Task getTask(Long id)
 	{
 		Optional<Task> result = this.taskRepository.findById(id);
@@ -50,7 +49,6 @@ public class TaskService
 	}
 	
 	/* Ritorna i task di un progetto di cui un membro è responabile */
-	@Transactional
 	public List<Task> assignedTasks(Progetto progetto, Utente membro)
 	{
 		List<Task> taskAssegnati = this.taskRepository.findByResponsabile(membro);

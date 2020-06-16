@@ -1,6 +1,5 @@
 package it.uniroma3.siw.progetto.controller;
 
-
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -16,7 +15,6 @@ import it.uniroma3.siw.progetto.model.Utente;
 import it.uniroma3.siw.progetto.service.RuoloService;
 import it.uniroma3.siw.progetto.service.UtenteService;
 
-
 @Controller
 public class UserController
 {
@@ -30,8 +28,7 @@ public class UserController
 	protected SessionData sessionData;
 
 	/* Funzione che si occupa di aggiungere ruolo e utente nel db se l'utente loggato
-	 * si e' appena registrato e aggiunge entrambi al modello.
-	 */
+	 * si e' appena registrato e aggiunge entrambi al modello. */
 	private void addUser(@AuthenticationPrincipal OAuth2User principal, Model model)
 	{
 		String idGit = principal.getAttribute("login");		//Prendo l'username dell'utente
@@ -134,7 +131,8 @@ public class UserController
 				utente.setNome(nome);
 				utente.setCognome(cognome);
 				utente.setMail(mail);
-			 
+				model.addAttribute("utente", utente);
+				
 			 	return "updateProfile";
 		 	}	
 		 	else 
@@ -151,6 +149,4 @@ public class UserController
 	 	model.addAttribute("ruolo", ruolo);
 	 	return "userProfile";
 	}
-	
-	
 }

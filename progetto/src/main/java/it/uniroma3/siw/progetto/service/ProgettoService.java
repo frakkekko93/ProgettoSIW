@@ -9,7 +9,6 @@ import it.uniroma3.siw.progetto.model.Progetto;
 import it.uniroma3.siw.progetto.model.Utente;
 import it.uniroma3.siw.progetto.repository.ProgettoRepository;
 
-
 @Service
 public class ProgettoService
 {

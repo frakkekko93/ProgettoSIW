@@ -2,8 +2,6 @@ package it.uniroma3.siw.progetto.controller;
 
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,46 +36,49 @@ public class TaskController
 		String vista = "";
 		
 		/* Rimanda all form di inserimento di un task */
-		if(comando.equals("assign"))
-		{
-			task=this.taskService.getTask(Long.parseLong(request.getParameter("task")));
-			model.addAttribute("task", task);
-			vista = "assignTask";
-		}
-		
-		/* Rimanda all form di inserimento di un task */
 		if(comando.equals("add"))
 		{
 			vista = "addTask";
 		}
-		
-		/* Rimanda alla for di modifica del progetto */
-		if(comando.equals("update"))
+		else
 		{
+			/* Aggiungo il task al modello */
 			task=this.taskService.getTask(Long.parseLong(request.getParameter("task")));
 			model.addAttribute("task", task);
-			vista = "updateTask";
-		}
-		
-		/* Elimina il progetto */
-		if(comando.equals("delete"))
-		{
-			task=this.taskService.getTask(Long.parseLong(request.getParameter("task")));
-			progetto.getTasks().remove(task);
-			this.taskService.delete(task);
-			vista = "project";
+			
+			/* Rimanda all form di assegnazione di un task ad un membro*/
+			if(comando.equals("assign"))
+			{
+				vista = "assignTask";
+			}
+			
+			/* Rimanda alla for di modifica del task */
+			if(comando.equals("update"))
+			{
+				task=this.taskService.getTask(Long.parseLong(request.getParameter("task")));
+				model.addAttribute("task", task);
+				vista = "updateTask";
+			}
+			
+			/* Elimina il task */
+			if(comando.equals("delete"))
+			{
+				task=this.taskService.getTask(Long.parseLong(request.getParameter("task")));
+				progetto.getTasks().remove(task);
+				this.taskService.delete(task);
+				vista = "project";
+			}
 		}
 		
 		model.addAttribute("progetto", progetto);
 		return vista;
 	}
 	
-	/* Aggiorna i dati di un progetto */
+	/* Aggiunge un task al progetto */
 	@RequestMapping(value= {"/addTask"}, method = RequestMethod.POST)
 	public String addTask(Model model, HttpServletRequest request)
 	{
 		Progetto progetto = this.progettoService.getProgetto(Long.parseLong(request.getParameter("progetto")));
-		
 		String comando = request.getParameter("button");
 		String nome = request.getParameter("nome");
 		String descrizione = request.getParameter("descrizione");
@@ -96,7 +97,6 @@ public class TaskController
 				task.setDescrizione(descrizione);
 				this.taskService.save(task);
 				this.taskService.addTask(progetto, task);
-				progetto = this.progettoService.save(progetto);
 			}
 			else
 			{
@@ -113,11 +113,10 @@ public class TaskController
 	
 	/* Aggiorna i dati di un task */
 	@RequestMapping(value= {"/updateTask"}, method = RequestMethod.POST)
-	public String updateTask(@AuthenticationPrincipal OAuth2User principal, Model model, HttpServletRequest request)
+	public String updateTask(Model model, HttpServletRequest request)
 	{
 		Task task = this.taskService.getTask(Long.parseLong(request.getParameter("task")));
 		Progetto progetto = this.progettoService.getProgetto(Long.parseLong(request.getParameter("progetto")));
-		
 		String comando = request.getParameter("button");
 		String nome = request.getParameter("nome");
 		String descrizione = request.getParameter("descrizione");
@@ -127,20 +126,20 @@ public class TaskController
 		{
 			TaskValidator validator = new TaskValidator();
 
+			task.setNome(nome);
+			task.setDescrizione(descrizione);
+		
 			/* Se i dati sono validi */
 			if(validator.validate(request))
 			{
-				/* Aggiorno il task e memorizzo i cambiamenti nel db */
-				task.setNome(nome);
-				task.setDescrizione(descrizione);
+				/* Memorizzo i cambiamenti nel db */
 				this.taskService.save(task);
 			}
 			else
 			{
 				/* Salvo i campi inseriti dall'utente e torno alla form */
-				model.addAttribute("nomeText", nome);
-				model.addAttribute("descrizioneText", descrizione);
-				return "addTask";
+				model.addAttribute("task", task);
+				return "updateTask";
 			}
 		}
 
@@ -148,14 +147,13 @@ public class TaskController
         return "project";
 	}
 	
-	/* Aggiorna i dati di un task */
+	/* Assegna un task ad un membro del progetto */
 	@RequestMapping(value= {"/assignTask"}, method = RequestMethod.POST)
 	public String assignTask(Model model, HttpServletRequest request)
 	{
 		Task task = this.taskService.getTask(Long.parseLong(request.getParameter("task")));
 		Progetto progetto = this.progettoService.getProgetto(Long.parseLong(request.getParameter("progetto")));
 		Utente membro = this.utenteService.getUtente(Long.parseLong(request.getParameter("membro")));
-		
 		String comando = request.getParameter("submit");
 		
 		/* Se non e' stata annullata l'operazione */

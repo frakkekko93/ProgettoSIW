@@ -22,14 +22,15 @@ public class ProjectController
 	@Autowired
 	protected ProgettoService progettoService;
 
-	@Autowired UtenteService utenteService;
+	@Autowired 
+	protected UtenteService utenteService;
 
 	@Autowired
 	protected SessionData sessionData;
 
 	/* Mostra la form per creare un nuovo progetto */
 	@RequestMapping(value = { "/new" }, method = RequestMethod.GET)
-    public String showProjectForm(HttpServletRequest request)
+    public String showCreateProjectForm()
     {
         return "insertProject";
     }
@@ -39,7 +40,6 @@ public class ProjectController
     public String registerProject(@AuthenticationPrincipal OAuth2User principal, HttpServletRequest request, Model model)
     {
 		Utente utenteLoggato = sessionData.getLoggedUser(principal);
-
 		String comando = request.getParameter("button");
 		String nome = request.getParameter("nome");
 		String descrizione = request.getParameter("descrizione");
@@ -82,6 +82,15 @@ public class ProjectController
         return "projectList";
     }
 
+	/* Mostra la pagina del progetto */
+	@RequestMapping(value = { "/project" }, method = RequestMethod.GET)
+    public String showProjectPage(Model model, HttpServletRequest request)
+    {
+		Progetto progetto = this.progettoService.getProgetto(Long.parseLong(request.getParameter("progetto")));
+		model.addAttribute("progetto", progetto);
+        return "insertProject";
+    }
+	
 	/* Effettua un operazione sul progetto selezionato */
 	@RequestMapping(value= {"/editProject", "/show"}, method = RequestMethod.POST)
 	public String editProject(@AuthenticationPrincipal OAuth2User principal, Model model, HttpServletRequest request)
@@ -123,7 +132,7 @@ public class ProjectController
 
 	/* Aggiorna i dati di un progetto */
 	@RequestMapping(value= {"/updateProject"}, method = RequestMethod.POST)
-	public String updateProject(@AuthenticationPrincipal OAuth2User principal, Model model, HttpServletRequest request)
+	public String updateProject(Model model, HttpServletRequest request)
 	{
 		Progetto progetto = this.progettoService.getProgetto(Long.parseLong(request.getParameter("progetto")));
 		String nome = request.getParameter("nome");
@@ -157,26 +166,23 @@ public class ProjectController
 	
 	/*Condivi il progetto con un altro utente*/
 	@RequestMapping(value = { "/share" }, method = RequestMethod.POST)
-	public String share(HttpServletRequest request, @AuthenticationPrincipal OAuth2User principal, Model model)
+	public String share(HttpServletRequest request, Model model)
 	{
-		Progetto progetto = this.progettoService.getProgetto(Long.parseLong(request.getParameter("progetto")));
-				
+		Progetto progetto = this.progettoService.getProgetto(Long.parseLong(request.getParameter("progetto")));		
 		String membro = request.getParameter("membroInput");
-		
 		String comando = request.getParameter("submit");
-		
 		Utente utente = utenteService.getUtente(membro);
 		
 		if(comando.equals("condividi")) 
 		{
-			
+			/* Utente insesistente */
 			if(utente == null || membro.isEmpty())
 			{
 				request.setAttribute("nonEsiste", "L'utente digitato non esiste");
 				model.addAttribute("progetto", progetto);
 				return "shareProject";
 			}
-			else 
+			else //Utente esistente
 			{
 				progettoService.condividiProgettoConUtente(progetto, utente);
 			}
@@ -189,7 +195,7 @@ public class ProjectController
 	
 	/* Visualizza la lista dei progetti condivisi con me */
 	@RequestMapping(value = { "/shareProjects" }, method = RequestMethod.GET)
-    public String showProjectshareWithMeList(@AuthenticationPrincipal OAuth2User principal, Model model)
+    public String showProjectSharedWithMe(@AuthenticationPrincipal OAuth2User principal, Model model)
     {
 		Utente utenteLoggato = sessionData.getLoggedUser(principal);
 
@@ -199,7 +205,7 @@ public class ProjectController
 		return "shareWithMeList";
     }
 	
-	
+	/* Permette di editare i membri di un progetto */
 	@RequestMapping(value = {"/editMembers"}, method = RequestMethod.POST)
 	public String editMembers(HttpServletRequest request, Model model)
 	{
@@ -221,7 +227,6 @@ public class ProjectController
 		
 		model.addAttribute("progetto", progetto);
 
-		
 		return vista;
 	}
 }

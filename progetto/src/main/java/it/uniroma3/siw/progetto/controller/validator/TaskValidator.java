@@ -2,6 +2,7 @@ package it.uniroma3.siw.progetto.controller.validator;
 
 import javax.servlet.http.HttpServletRequest;
 
+/* Classe che valida che i dati di un task inseriti da un utente siano validi */
 public class TaskValidator 
 {
 	public boolean validate(HttpServletRequest request)

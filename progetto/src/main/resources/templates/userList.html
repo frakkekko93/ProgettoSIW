@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="it" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
 	<head>
-	<link rel="stylesheet" th:href="@{/css/tableListProject.css}"/>
+		<link rel="stylesheet" th:href="@{/css/tableListProject.css}"/>
 	    <meta charset="UTF-8">
 	    <title>Progetto</title>
 	</head>
@@ -16,11 +16,11 @@
 			</tr>	
 			<tr th:each="utente: ${utenti}">
 			    <td th:text="${utente.username}" id="nomeUtente"></td>
-			<td>
-			<form th:action="@{'/viewUtente' + '?utente=' + ${utente.id}}" method="POST">
+				<td>
+					<form th:action="@{'/viewUtente' + '?utente=' + ${utente.id}}" method="POST">
 			    		<button type="submit" value="visualizza" name="submit">Visualizza</button>
 			    	</form>
-			</td>
+				</td>
 			</tr>
 		</table>
 		<div class="footer"><a href="/userHome">Home utente</a></div>

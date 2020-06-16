@@ -6,7 +6,6 @@ import java.util.Optional;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import it.uniroma3.siw.progetto.model.Utente;
 import it.uniroma3.siw.progetto.repository.UtenteRepository;
 
@@ -17,7 +16,6 @@ public class UtenteService
 	protected UtenteRepository utenteRepository;
 
 	/* Trova un utente in base al suo id */
-	@Transactional
 	public Utente getUtente(Long id)
 	{
 		Optional<Utente> result = this.utenteRepository.findById(id);
@@ -26,7 +24,6 @@ public class UtenteService
 	}
 
 	/* Trova un utente in base al suo username */
-	@Transactional
 	public Utente getUtente(String username)
 	{
 		Optional<Utente> result = this.utenteRepository.findByUsername(username);
@@ -41,8 +38,9 @@ public class UtenteService
 		return this.utenteRepository.save(r);
 	}
 	
-	@Transactional
-    public List<Utente> getAllUsers() {
+	/* Prende tutti gli utenti presenti nel db */
+    public List<Utente> getAllUsers() 
+	{
         List<Utente> result = new ArrayList<>();
         Iterable<Utente> iterable = this.utenteRepository.findAll();
         for(Utente utente : iterable)
@@ -50,7 +48,7 @@ public class UtenteService
         return result;
     }
 	
-	/* Elimina progetto */
+	/* Elimina un utente */
 	@Transactional
 	public void delete(Utente utente) 
 	{
