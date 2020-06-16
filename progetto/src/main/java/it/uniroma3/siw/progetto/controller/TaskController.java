@@ -28,7 +28,7 @@ public class TaskController
 	
 	/* Effettua un operazione sul progetto selezionato */
 	@RequestMapping(value= {"/editTasks"}, method = RequestMethod.POST)
-	public String editProject(Model model, HttpServletRequest request)
+	public String editTasks(Model model, HttpServletRequest request)
 	{
 		Progetto progetto = this.progettoService.getProgetto(Long.parseLong(request.getParameter("progetto")));
 		Task task = null;
