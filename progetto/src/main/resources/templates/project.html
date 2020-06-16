@@ -31,14 +31,17 @@
 			<tr>
 			    <th>Nome task</th>
 			    <th>Descrizione</th>
+			    <th>Assegnato a</th>
 			    <th>Azioni</th>
 			</tr>	
 			<tr th:each="task: ${progetto.tasks}">
 			    <td th:text="${task.nome}" id="nomeTask"></td>
 			    <td th:text="${task.descrizione}"></td>
+			    <td th:text="${task?.responsabile?.username}"></td>
 			    <td><form th:action="@{'/editTasks' + '?progetto=' + ${progetto.id} + '&task=' + ${task.id}}" method="POST">
 						<button type="submit" value="update" name="submit">aggiorna task</button>
 						<button type="submit" value="delete" name="submit">cancella task</button>
+						<button type="submit" value="assign" name="submit">assegna</button>
 					</form>
 	    		</td>
 			</tr>

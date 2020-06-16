@@ -224,7 +224,6 @@ public class ProjectController
 		
 		return vista;
 	}
-
 }
 	
 

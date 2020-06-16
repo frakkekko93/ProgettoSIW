@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Task 
@@ -32,6 +33,9 @@ public class Task
 	
 	@ManyToMany(fetch=FetchType.LAZY)
 	private List<Tag> tags;
+	
+	@OneToOne
+	private Utente responsabile;
 	
 	/* Costruttore */
 	public Task() 
@@ -99,5 +103,15 @@ public class Task
 	public void setTags(List<Tag> tags) 
 	{
 		this.tags = tags;
+	}
+
+	public Utente getResponsabile() 
+	{
+		return responsabile;
+	}
+
+	public void setResponsabile(Utente responsabile) 
+	{
+		this.responsabile = responsabile;
 	}
 }
