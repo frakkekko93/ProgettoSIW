@@ -182,8 +182,9 @@ public class ProjectController
 			}
 		}
 		
+		model.addAttribute("progetto", progetto);
 		
-		return this.showProjectList(principal, model);
+		return "project";
 	}
 	
 	/* Visualizza la lista dei progetti condivisi con me */
@@ -198,4 +199,32 @@ public class ProjectController
 		return "shareWithMeList";
     }
 	
+	
+	@RequestMapping(value = {"/editMembers"}, method = RequestMethod.POST)
+	public String editMembers(HttpServletRequest request, Model model)
+	{
+		Progetto progetto = this.progettoService.getProgetto(Long.parseLong(request.getParameter("progetto")));
+		String comando = request.getParameter("submit");
+		String vista = "";
+		Utente u = this.utenteService.getUtente(Long.parseLong(request.getParameter("membro")));		
+		
+		if(comando.equals("deleteMembro"))
+		{
+			progetto.getMembri().remove(u);
+			u.getProgettiVisibili().remove(progetto);
+			this.utenteService.save(u);
+			progetto = this.progettoService.save(progetto);
+			model.addAttribute("progetto", progetto);
+			
+			vista = "project";
+		}
+		
+		model.addAttribute("progetto", progetto);
+
+		
+		return vista;
+	}
+
 }
+	
+

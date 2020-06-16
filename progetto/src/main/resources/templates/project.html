@@ -6,14 +6,30 @@
 	    <title>Progetto</title>
 	</head>
 	<body>
-		<h1 th:text="${progetto.nome}"></h1>
-		<p th:text="${progetto.descrizione}"></p>
+	<h1>PROGETTO</h1>
+			<table style="width:100%">
+			<tr>
+			    <th>Nome progetto</th>
+			    <th>Descrizione</th>
+			    <th>Azioni</th>
+			    <th></th>
+			</tr>	
+			<tr>
+			    <td th:text="${progetto.nome}" id="nomeProgetto">></td>
+			    <td th:text="${progetto.descrizione}"></td>
+			    <td><form th:action="@{'/editProject' + '?progetto=' + ${progetto.id}}" method="POST">
+			<button type="submit" value="update" name="submit">aggiorna</button>
+			<button type="submit" value="delete" name="submit">cancella</button>
+		</form>
+	    		</td>
+			</tr>
+		</table>
 		
-		<h2>Tasks</h2>
+		<h2>TASK</h2>
 		
 		<table style="width:100%">
 			<tr>
-			    <th>Nome</th>
+			    <th>Nome task</th>
 			    <th>Descrizione</th>
 			    <th>Azioni</th>
 			</tr>	
@@ -31,13 +47,26 @@
 			<button type="submit" value="add" name="submit">aggiungi task</button>
 		</form>		
 		
-		<h2>Membri</h2>
-		
+		<h2>MEMBRI</h2>
+		<table style="width:100%">
+			<tr>
+			    <th>Username</th>
+			    <th>Azioni</th>
+			</tr>	
+			<tr th:each="membro: ${progetto.membri}">
+			    <td th:text="${membro.username}" id="userMebro"></td>
+			    <td th:text="${membro.mail}"></td>
+			    <td><form th:action="@{'/editMembers' + '?progetto=' + ${progetto.id} + '&membro=' + ${membro.id}}" method="POST">
+						<button type="submit" value="deleteMembro" name="submit">cancella membro</button>
+					</form>
+	    		</td>
+			</tr>
+		</table>
 		<form th:action="@{'/editProject' + '?progetto=' + ${progetto.id}}" method="POST">
-			<button type="submit" value="update" name="submit">aggiorna</button>
-			<button type="submit" value="share" name="submit">condividi</button>
-			<button type="submit" value="delete" name="submit">cancella</button>
+		<button type="submit" value="share" name="submit">condividi</button>
 		</form>
+		
+		
 		
 		<div class="footer"><a href="/userHome">Home utente</a></div>
 	</body>
