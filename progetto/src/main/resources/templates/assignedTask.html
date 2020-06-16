@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="it" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+	<head>
+		<link rel="stylesheet" th:href="@{/css/tableListProject.css}"/>
+	    <meta charset="UTF-8">
+	    <title>Progetto</title>
+	</head>
+	<body>
+		<h1>PROGETTO</h1>
+		<table style="width:100%">
+		<thead>
+			<tr>
+			    <th>Nome progetto</th>
+			    <th>Descrizione</th>
+			</tr>	
+			</thead>
+			<tbody>
+			<tr>
+			    <td th:text="${progetto.nome}" id="nomeProgetto">></td>
+			    <td th:text="${progetto.descrizione}"></td>
+			</tr>
+			</tbody>
+		</table>
+			
+		<h2>TASK</h2>
+		
+		<table style="width:100%">
+		<thead>
+			<tr>
+			    <th>Nome task</th>
+			    <th>Descrizione</th>
+			</tr>
+			</thead>
+			<tbody>
+			<tr th:each="task: ${progetto.tasks}">
+			    <td th:text="${task.nome}" id="nomeTask"></td>
+			    <td th:text="${task.descrizione}"></td>			    
+			</tr>
+			</tbody>
+		</table>	
+		
+		<h2>TASK ASSEGNATI</h2>
+		
+		<table style="width:100%">
+		<thead>
+			<tr>
+			    <th>Nome task</th>
+			    <th>Descrizione</th>
+			</tr>
+			</thead>
+			<tbody>
+			<tr th:each="task: ${assignedTasks}">
+			    <td th:text="${task.nome}" id="nomeTask"></td>
+			    <td th:text="${task.descrizione}"></td>			    
+			</tr>
+			</tbody>
+		</table>
+		
+		<div class="footer"><a href="/userHome">Home utente</a></div>
+	</body>
+</html>
