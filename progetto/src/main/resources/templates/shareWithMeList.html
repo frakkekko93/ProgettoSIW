@@ -12,10 +12,15 @@
 			<tr>
 			    <th>Progetto</th>
 			    <th>Descrizione</th>
+			    <th>Azioni</th>
 			</tr>	
 			<tr th:each="project: ${projects}">
 			    <td th:text="${project.nome}" id="nomeProject"></td>
 			    <td th:text="${project.descrizione}"></td>
+			     <td><form th:action="@{'/showOnlyProject' + '?progetto=' + ${project.id}}" method="POST">
+			    		<button type="submit" value="show" name="submit">visualizza progetto</button>
+			    	</form>
+	    		</td>
 			</tr>
 		</table>
 		<div class="footer"><a href="/userHome">Home utente</a></div>

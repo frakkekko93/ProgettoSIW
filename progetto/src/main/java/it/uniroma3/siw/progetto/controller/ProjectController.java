@@ -14,6 +14,7 @@ import it.uniroma3.siw.progetto.controller.validator.ProjectValidator;
 import it.uniroma3.siw.progetto.model.Progetto;
 import it.uniroma3.siw.progetto.model.Utente;
 import it.uniroma3.siw.progetto.service.ProgettoService;
+import it.uniroma3.siw.progetto.service.TaskService;
 import it.uniroma3.siw.progetto.service.UtenteService;
 
 @Controller
@@ -27,6 +28,9 @@ public class ProjectController
 
 	@Autowired
 	protected SessionData sessionData;
+	
+	@Autowired
+	protected TaskService taskService;
 
 	/* Mostra la form per creare un nuovo progetto */
 	@RequestMapping(value = { "/new" }, method = RequestMethod.GET)
@@ -201,7 +205,7 @@ public class ProjectController
 
 		List<Progetto> projects = this.progettoService.findByMembri(utenteLoggato);
 		model.addAttribute("projects", projects);
-        
+		        
 		return "shareWithMeList";
     }
 	
@@ -228,6 +232,20 @@ public class ProjectController
 		model.addAttribute("progetto", progetto);
 
 		return vista;
+	}
+	
+	/* Effettua un operazione sul progetto selezionato */
+	@RequestMapping(value= {"/showOnlyProject"}, method = RequestMethod.POST)
+	public String showOnlyProject(@AuthenticationPrincipal OAuth2User principal, Model model, HttpServletRequest request)
+	{
+		Utente membro = sessionData.getLoggedUser(principal);
+		
+		Progetto progetto = this.progettoService.getProgetto(Long.parseLong(request.getParameter("progetto")));
+		model.addAttribute("progetto", progetto);
+		
+		model.addAttribute("assignedTasks", taskService.assignedTasks(progetto, membro));
+
+		return "assignedTask";
 	}
 }
 	
