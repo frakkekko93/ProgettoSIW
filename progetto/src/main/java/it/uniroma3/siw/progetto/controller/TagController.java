@@ -1,27 +1,30 @@
 package it.uniroma3.siw.progetto.controller;
 
 import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
 import it.uniroma3.siw.progetto.controller.validator.TagValidator;
 import it.uniroma3.siw.progetto.model.Progetto;
 import it.uniroma3.siw.progetto.model.Tag;
+import it.uniroma3.siw.progetto.model.Task;
 import it.uniroma3.siw.progetto.service.ProgettoService;
 import it.uniroma3.siw.progetto.service.TagService;
+import it.uniroma3.siw.progetto.service.TaskService;
 
 @Controller
-public class TagController {
-
+public class TagController 
+{
 	@Autowired
 	protected TagService tagService;
 	
 	@Autowired
 	protected ProgettoService progettoService;
+	
+	@Autowired
+	protected TaskService taskService;
 	
 	@RequestMapping(value= {"/addTag"}, method = RequestMethod.GET)
 	public String showAddTag(Model model, HttpServletRequest request) 
@@ -56,7 +59,6 @@ public class TagController {
 				tag = tagService.save(tag);
 				progetto.getTags().add(tag);
 				progettoService.save(progetto);
-				
 			}
 			else
 			{
@@ -64,7 +66,6 @@ public class TagController {
 				model.addAttribute("nomeText", nome);
 				model.addAttribute("descrizioneText", descrizione);
 				model.addAttribute("coloreText", colore);
-				
 				model.addAttribute("progetto", progetto);
 				return "addTag";
 			}
@@ -72,5 +73,24 @@ public class TagController {
 
 		model.addAttribute("progetto", progetto);
         return "project";
+	}
+	
+	/* Assegna un tag ad un task del progetto */
+	@RequestMapping(value={"/assignTag"}, method=RequestMethod.POST)
+	public String assignTag(Model model, HttpServletRequest request)
+	{
+		Tag tag = this.tagService.getTag(Long.parseLong(request.getParameter("tag")));
+		Task task = this.taskService.getTask(Long.parseLong(request.getParameter("task")));
+		Progetto progetto = this.progettoService.getProgetto(Long.parseLong(request.getParameter("progetto")));
+		String comando = request.getParameter("submit");
+		
+		if(comando.equals("assign"))
+		{
+			task.getTags().add(tag);
+			this.taskService.save(task);
+		}
+		
+		model.addAttribute("progetto", progetto);
+		return "project";
 	}
 }

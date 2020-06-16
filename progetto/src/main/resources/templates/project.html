@@ -44,11 +44,8 @@
 			<tr th:each="task: ${progetto.tasks}">
 			    <td th:text="${task.nome}" id="nomeTask"></td>
 			    <td th:text="${task.descrizione}"></td>
-			    <td th:text="${task?.responsabile?.username}"></td>
-			    <td><form th:action="@{'/editTasks' + '?progetto=' + ${progetto.id} + '&task=' + ${task.id}}" method="POST">
-						<button type="submit" value="update" name="submit">aggiorna task</button>
-						<button type="submit" value="delete" name="submit">cancella task</button>
-						<button type="submit" value="assign" name="submit">assegna</button>
+				<td><form th:action="@{'/showTask' + '?progetto=' + ${progetto.id} + '&task=' + ${task.id}}" method="POST">
+						<button type="submit" value="showTask" name="submit">visualizza</button>
 					</form>
 	    		</td>
 			</tr>
@@ -100,9 +97,9 @@
 			</tbody>
 		</table>
 		<form th:action="@{'/editProject' + '?progetto=' + ${progetto.id}}" method="POST">
-		<button type="submit" value="addTag" name="submit">aggiungi</button>
+			<button type="submit" value="addTag" name="submit">aggiungi</button>
 		</form>
 		
-		<div class="footer"><a href="/userHome">Home utente</a></div>
+		<div class="footer"><a th:href="@{'/project' + '?progetto' + ${progetto.id}}">Home utente</a></div>
 	</body>
 </html>

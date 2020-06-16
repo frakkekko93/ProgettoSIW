@@ -26,6 +26,19 @@ public class TaskController
 	@Autowired
 	protected UtenteService utenteService;
 	
+	/* Mostra le informazioni del task */
+	@RequestMapping(value= {"/showTask"}, method = RequestMethod.POST)
+	public String showTask(Model model, HttpServletRequest request)
+	{
+		Progetto progetto = this.progettoService.getProgetto(Long.parseLong(request.getParameter("progetto")));
+		Task task = this.taskService.getTask(Long.parseLong(request.getParameter("task")));
+		
+		model.addAttribute("progetto", progetto);
+		model.addAttribute("task", task);
+		
+		return "task";
+	}
+	
 	/* Effettua un operazione sul progetto selezionato */
 	@RequestMapping(value= {"/editTasks"}, method = RequestMethod.POST)
 	public String editTasks(Model model, HttpServletRequest request)
@@ -46,24 +59,27 @@ public class TaskController
 			task=this.taskService.getTask(Long.parseLong(request.getParameter("task")));
 			model.addAttribute("task", task);
 			
-			/* Rimanda all form di assegnazione di un task ad un membro*/
+			/* Rimanda all form di assegnazione di un task ad un membro */
 			if(comando.equals("assign"))
 			{
 				vista = "assignTask";
 			}
 			
+			/* Rimanda all form di assegnazione di un tag ad un tag */
+			if(comando.equals("assignTag"))
+			{
+				vista = "assignTag";
+			}
+			
 			/* Rimanda alla for di modifica del task */
 			if(comando.equals("update"))
 			{
-				task=this.taskService.getTask(Long.parseLong(request.getParameter("task")));
-				model.addAttribute("task", task);
 				vista = "updateTask";
 			}
 			
 			/* Elimina il task */
 			if(comando.equals("delete"))
 			{
-				task=this.taskService.getTask(Long.parseLong(request.getParameter("task")));
 				progetto.getTasks().remove(task);
 				this.taskService.delete(task);
 				vista = "project";
