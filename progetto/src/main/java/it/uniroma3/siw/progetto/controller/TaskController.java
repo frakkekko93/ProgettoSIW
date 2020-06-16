@@ -25,13 +25,15 @@ public class TaskController
 	
 	/* Effettua un operazione sul progetto selezionato */
 	@RequestMapping(value= {"/editTasks"}, method = RequestMethod.POST)
-	public String editProject(@AuthenticationPrincipal OAuth2User principal, Model model, HttpServletRequest request)
+	public String editProject(Model model, HttpServletRequest request)
 	{
 		Progetto progetto = this.progettoService.getProgetto(Long.parseLong(request.getParameter("progetto")));
+		Task task = this.taskService.getTask(Long.parseLong(request.getParameter("task")));
 		String comando = request.getParameter("submit");
 		String vista = "";
 		
 		model.addAttribute("progetto", progetto);
+		model.addAttribute("task", task);
 
 		/* Rimanda alla pagina di visualizzazione del progetto */
 		if(comando.equals("add"))
@@ -48,7 +50,9 @@ public class TaskController
 		/* Elimina il progetto */
 		if(comando.equals("delete"))
 		{
-			
+			progetto.getTasks().remove(task);
+			this.taskService.delete(task);
+			vista = "project";
 		}
 		
 		return vista;
@@ -56,7 +60,7 @@ public class TaskController
 	
 	/* Aggiorna i dati di un progetto */
 	@RequestMapping(value= {"/addTask"}, method = RequestMethod.POST)
-	public String addTask(@AuthenticationPrincipal OAuth2User principal, Model model, HttpServletRequest request)
+	public String addTask(Model model, HttpServletRequest request)
 	{
 		Progetto progetto = this.progettoService.getProgetto(Long.parseLong(request.getParameter("progetto")));
 		
@@ -92,10 +96,11 @@ public class TaskController
         return "project";
 	}
 	
-	/* Aggiorna i dati di un progetto */
+	/* Aggiorna i dati di un task */
 	@RequestMapping(value= {"/updateTask"}, method = RequestMethod.POST)
 	public String updateTask(@AuthenticationPrincipal OAuth2User principal, Model model, HttpServletRequest request)
 	{
+		Task task = this.taskService.getTask(Long.parseLong(request.getParameter("task")));
 		Progetto progetto = this.progettoService.getProgetto(Long.parseLong(request.getParameter("progetto")));
 		
 		String comando = request.getParameter("button");
@@ -110,12 +115,10 @@ public class TaskController
 			/* Se i dati sono validi */
 			if(validator.validate(request))
 			{
-				/* Aggiungo il task al progetto */
-				Task task = new Task();
+				/* Aggiorno il task e memorizzo i cambiamenti nel db */
 				task.setNome(nome);
 				task.setDescrizione(descrizione);
 				this.taskService.save(task);
-				this.taskService.addTask(progetto, task);
 			}
 			else
 			{

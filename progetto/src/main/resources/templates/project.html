@@ -20,7 +20,7 @@
 			<tr th:each="task: ${progetto.tasks}">
 			    <td th:text="${task.nome}" id="nomeTask"></td>
 			    <td th:text="${task.descrizione}"></td>
-			    <td><form th:action="@{'/editTasks' + '?progetto=' + ${progetto.id}}" method="POST">
+			    <td><form th:action="@{'/editTasks' + '?progetto=' + ${progetto.id} + '&task=' + ${task.id}}" method="POST">
 						<button type="submit" value="update" name="submit">aggiorna task</button>
 						<button type="submit" value="delete" name="submit">cancella task</button>
 					</form>
