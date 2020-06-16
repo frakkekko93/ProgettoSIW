@@ -8,12 +8,15 @@
 	<body>
 		<h1>PROGETTO</h1>
 		<table style="width:100%">
+		<thead>
 			<tr>
 			    <th>Nome progetto</th>
 			    <th>Descrizione</th>
 			    <th>Azioni</th>
 			    <th></th>
-			</tr>	
+			</tr>
+			</thead>
+			<tbody>	
 			<tr>
 			    <td th:text="${progetto.nome}" id="nomeProgetto">></td>
 			    <td th:text="${progetto.descrizione}"></td>
@@ -23,17 +26,21 @@
 		</form>
 	    		</td>
 			</tr>
+			</tbody>
 		</table>
 			
 		<h2>TASK</h2>
 		
 		<table style="width:100%">
+		<thead>
 			<tr>
 			    <th>Nome task</th>
 			    <th>Descrizione</th>
 			    <th>Assegnato a</th>
 			    <th>Azioni</th>
-			</tr>	
+			</tr>
+			</thead>
+			<tbody>
 			<tr th:each="task: ${progetto.tasks}">
 			    <td th:text="${task.nome}" id="nomeTask"></td>
 			    <td th:text="${task.descrizione}"></td>
@@ -45,6 +52,7 @@
 					</form>
 	    		</td>
 			</tr>
+			</tbody>
 		</table>
 		<form th:action="@{'/editTasks' + '?progetto=' + ${progetto.id}}" method="POST">
 			<button type="submit" value="add" name="submit">aggiungi task</button>
@@ -52,10 +60,13 @@
 		
 		<h2>MEMBRI</h2>
 		<table style="width:100%">
+		<thead>
 			<tr>
 			    <th>Username</th>
 			    <th>Azioni</th>
-			</tr>	
+			</tr>
+			</thead>
+			<tbody>	
 			<tr th:each="membro: ${progetto.membri}">
 			    <td th:text="${membro.username}" id="userMebro"></td>
 			    <td th:text="${membro.mail}"></td>
@@ -64,6 +75,7 @@
 					</form>
 	    		</td>
 			</tr>
+			</tbody>
 		</table>
 		<form th:action="@{'/editProject' + '?progetto=' + ${progetto.id}}" method="POST">
 		<button type="submit" value="share" name="submit">condividi</button>

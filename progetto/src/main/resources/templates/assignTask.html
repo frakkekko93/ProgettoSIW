@@ -10,10 +10,13 @@
 		
 		<h2>MEMBRI DEL PROGETTO</h2>
 		<table style="width:100%">
+		<thead>
 			<tr>
 			    <th>Username</th>
 			    <th>Azioni</th>
 			</tr>	
+			</thead>
+			<tbody>
 			<tr th:each="membro: ${progetto.membri}">
 			    <td th:text="${membro.username}" id="userMebro"></td>
 			    <td th:text="${membro.mail}"></td>
@@ -22,6 +25,7 @@
 					</form>
 	    		</td>
 			</tr>
+			</tbody>
 		</table>
 	</body>
 </html>
