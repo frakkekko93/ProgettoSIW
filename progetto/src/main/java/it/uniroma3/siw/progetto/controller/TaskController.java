@@ -95,6 +95,7 @@ public class TaskController
 				Task task = new Task();
 				task.setNome(nome);
 				task.setDescrizione(descrizione);
+				progetto.getTasks().add(task);
 				this.taskService.save(task);
 				this.taskService.addTask(progetto, task);
 			}
