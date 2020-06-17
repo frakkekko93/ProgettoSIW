@@ -30,6 +30,22 @@
 			</tbody>
 		</table>
 		
+		<h2>COMMENTI</h2>
+		<table style="width:100%">
+		<thead>
+				<tr>
+				    <th>Autore</th>
+				    <th>Testo</th>
+				</tr>
+			</thead>
+			<tbody>	
+				<tr th:each="commento: ${task.commenti}">
+				    <td th:text="${commento.autore}"></td>
+				    <td th:text="${commento.testo}"></td>
+				</tr>
+			</tbody>
+		</table>
+		
 		<h2>TAG</h2>
 		<table style="width:100%">
 		<thead>
