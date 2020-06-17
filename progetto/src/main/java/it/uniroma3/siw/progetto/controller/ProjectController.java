@@ -81,8 +81,8 @@ public class ProjectController
     public String showProjectList(@AuthenticationPrincipal OAuth2User principal, Model model)
     {
 		Utente utenteLoggato = sessionData.getLoggedUser(principal);
-
 		List<Progetto> projects = this.progettoService.findByProprietario(utenteLoggato);
+		
 		model.addAttribute("projects", projects);
         return "projectList";
     }
@@ -196,7 +196,7 @@ public class ProjectController
 			}
 			else //Utente esistente
 			{
-				progettoService.condividiProgettoConUtente(progetto, utente);
+				this.progettoService.condividiProgettoConUtente(progetto, utente);
 			}
 		}
 		
@@ -222,16 +222,13 @@ public class ProjectController
 	public String editMembers(HttpServletRequest request, Model model)
 	{
 		Progetto progetto = this.progettoService.getProgetto(Long.parseLong(request.getParameter("progetto")));
+		Utente u = this.utenteService.getUtente(Long.parseLong(request.getParameter("membro")));
 		String comando = request.getParameter("submit");
-		String vista = "";
-		Utente u = this.utenteService.getUtente(Long.parseLong(request.getParameter("membro")));		
+		String vista = "";		
 		
 		if(comando.equals("deleteMembro"))
 		{
-			progetto.getMembri().remove(u);
-			u.getProgettiVisibili().remove(progetto);
-			this.utenteService.save(u);
-			progetto = this.progettoService.save(progetto);
+			progetto = this.progettoService.deleteMembro(progetto, u);
 			model.addAttribute("progetto", progetto);
 			
 			vista = "project";
@@ -242,19 +239,16 @@ public class ProjectController
 		return vista;
 	}
 	
-	/* Effettua un operazione sul progetto selezionato */
+	/* Mostra la pagina descrittiva del progetto ad un membro */
 	@RequestMapping(value= {"/showOnlyProject"})
 	public String showOnlyProject(@AuthenticationPrincipal OAuth2User principal, Model model, HttpServletRequest request)
 	{
 		Utente membro = sessionData.getLoggedUser(principal);
-		
 		Progetto progetto = this.progettoService.getProgetto(Long.parseLong(request.getParameter("progetto")));
-		model.addAttribute("progetto", progetto);
 		
+		model.addAttribute("progetto", progetto);
 		model.addAttribute("assignedTasks", taskService.assignedTasks(progetto, membro));
 
 		return "assignedTask";
 	}
 }
-	
-

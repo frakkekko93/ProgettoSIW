@@ -158,16 +158,12 @@ public class TaskController
 			/* Se i dati sono validi */
 			if(validator.validate(request))
 			{
-				if(!this.progettoService.hasTask(nome, progetto))
-				{
-					/* Aggiungo il task al progetto */
-					Task task = new Task();
-					task.setNome(nome);
-					task.setDescrizione(descrizione);
-					progetto.getTasks().add(task);
-					this.taskService.save(task);
-					this.taskService.addTask(progetto, task);
-				}
+				/* Aggiungo il task al progetto */
+				Task task = new Task();
+				task.setNome(nome);
+				task.setDescrizione(descrizione);
+				
+				this.taskService.addTask(progetto, task);
 			}
 			else
 			{
@@ -292,7 +288,5 @@ public class TaskController
 		model.addAttribute("task", task);
 		
 		return "taskShowOnly";
-		
 	}
-
 }

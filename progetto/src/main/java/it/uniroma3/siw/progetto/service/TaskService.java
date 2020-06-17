@@ -18,6 +18,9 @@ public class TaskService
 {
 	@Autowired
 	protected TaskRepository taskRepository;
+	
+	@Autowired
+	protected ProgettoService progettoService;
 
 	/* Salva un task nel repository */
 	@Transactional
@@ -30,8 +33,13 @@ public class TaskService
 	@Transactional
 	public void addTask(Progetto progetto, Task task)
 	{
-		task.setProgetto(progetto);
-		this.save(task);
+		if(!progetto.getTasks().contains(task))
+		{
+			task.setProgetto(progetto);
+			progetto.getTasks().add(task);
+			this.taskRepository.save(task);
+			this.progettoService.save(progetto);
+		}
 	}
 
 	/* Prende un task in base al suo id */
@@ -69,51 +77,12 @@ public class TaskService
 
 		return returnList;
 	}
-
-	/* Verifica se il progetto ha un tag con il nome specificato */
-	public boolean hasTag(String nome, Task task)
-	{
-		List<Tag> tags = task.getTags();
-		Iterator<Tag> it = tags.iterator();
-
-		Tag t = null;
-		while(it.hasNext())
-		{
-			t = it.next();
-
-			if(t.getNome().equals(nome))
-			{
-				return true;
-			}
-		}
-
-		return false;
-	}
 	
 	/* Elimina un tag dal task*/
 	@Transactional
 	public void deleteTag(Tag tag, Task task)
 	{
-		List<Tag> tags = task.getTags();
-		Iterator<Tag> it = tags.iterator();
-
-		Tag t = null;
-		while(it.hasNext())
-		{
-			try 
-			{
-				t = it.next();
-			}
-			catch(Exception e)
-			{
-				break;
-			}
-
-			if(t.getNome().equals(tag.getNome()))
-			{
-				task.getTags().remove(t);
-				this.taskRepository.save(task);
-			}
-		}
+		task.getTags().remove(tag);
+		this.taskRepository.save(task);
 	}
 }

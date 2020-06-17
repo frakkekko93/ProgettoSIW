@@ -1,8 +1,5 @@
 package it.uniroma3.siw.progetto.controller;
 
-import java.util.Iterator;
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -56,17 +53,13 @@ public class TagController
 			/* Se i dati sono validi */
 			if(validator.validate(request))
 			{
-				if(!this.progettoService.hasTag(nome, progetto))
-				{
-					/* Aggiungo il tag al progetto */
-					Tag tag = new Tag();
-					tag.setNome(nome);
-					tag.setDescrizione(descrizione);
-					tag.setColore(colore);
-					tag = tagService.save(tag);
-					progetto.getTags().add(tag);
-					progettoService.save(progetto);
-				}
+				/* Aggiungo il tag al progetto */
+				Tag tag = new Tag();
+				tag.setNome(nome);
+				tag.setDescrizione(descrizione);
+				tag.setColore(colore);
+				tag = tagService.save(tag);
+				this.tagService.addTag(progetto, tag);
 			}
 			else
 			{
@@ -94,12 +87,8 @@ public class TagController
 		
 		if(comando.equals("assign"))
 		{
-			if(!this.taskService.hasTag(tag.getNome(), task))
-			{
-				/* Aggiungo il tag al task */
-				task.getTags().add(tag);
-				this.taskService.save(task);
-			}
+			/* Aggiungo il tag al task */
+			this.tagService.addTagToTask(task, tag);
 		}
 		
 		model.addAttribute("task", task);
@@ -113,20 +102,6 @@ public class TagController
 	{
 		Tag tag = this.tagService.getTag(Long.parseLong(request.getParameter("tag")));
 		Progetto progetto = this.progettoService.getProgetto(Long.parseLong(request.getParameter("progetto")));
-		
-		List<Task> listaTask = progetto.getTasks();
-		Iterator<Task> it = listaTask.iterator();
-		
-		Task t = null;
-		while(it.hasNext())
-		{
-			t = it.next();
-			
-			if(this.taskService.hasTag(tag.getNome(), t))
-			{
-				this.taskService.deleteTag(tag, t);
-			}
-		}
 		
 		this.progettoService.deleteTag(tag, progetto);
 		

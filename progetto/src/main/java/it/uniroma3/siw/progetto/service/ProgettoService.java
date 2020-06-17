@@ -17,6 +17,12 @@ public class ProgettoService
 {
 	@Autowired
 	protected ProgettoRepository progettoRepository;
+	
+	@Autowired
+	protected UtenteService utenteService;
+	
+	@Autowired
+	protected TaskService taskService;
 
 	/* Prende un progetto dal suo id */
 	public Progetto getProgetto(Long id)
@@ -53,46 +59,6 @@ public class ProgettoService
         return this.progettoRepository.save(progetto);
     }
 	
-	/* Verifica se il progetto ha un task con il nome specificato */
-	public boolean hasTask(String nome, Progetto progetto)
-	{
-		List<Task> tasks = progetto.getTasks();
-		Iterator<Task> it = tasks.iterator();
-		
-		Task t = null;
-		while(it.hasNext())
-		{
-			t = it.next();
-			
-			if(t.getNome().equals(nome))
-			{
-				return true;
-			}
-		}
-		
-		return false;
-	}
-	
-	/* Verifica se il progetto ha un tag con il nome specificato */
-	public boolean hasTag(String nome, Progetto progetto)
-	{
-		List<Tag> tags = progetto.getTags();
-		Iterator<Tag> it = tags.iterator();
-		
-		Tag t = null;
-		while(it.hasNext())
-		{
-			t = it.next();
-			
-			if(t.getNome().equals(nome))
-			{
-				return true;
-			}
-		}
-		
-		return false;
-	}
-	
 	/* Elimina progetto */
 	@Transactional
 	public void delete(Progetto progetto) 
@@ -104,26 +70,45 @@ public class ProgettoService
 	@Transactional
 	public void deleteTag(Tag tag, Progetto progetto)
 	{
-		List<Tag> tags = progetto.getTags();
-		Iterator<Tag> it = tags.iterator();
+		/* Prendo la lista dei task del progetto */
+		List<Task> listaTask = progetto.getTasks();
+		Iterator<Task> it = listaTask.iterator();
 		
-		Tag t = null;
+		/* Elimino il tag da tutti i task del progetto */
+		Task t = null;
 		while(it.hasNext())
 		{
-			try 
-			{
-				t = it.next();
-			}
-			catch(Exception e)
-			{
-				break;
-			}
+			t = it.next();
 			
-			if(t.getNome().equals(tag.getNome()))
-			{
-				progetto.getTags().remove(t);
-				this.progettoRepository.save(progetto);
-			}
+			this.taskService.deleteTag(tag, t);
 		}
+		
+		progetto.getTags().remove(tag);
+		this.progettoRepository.save(progetto);
+	}
+	
+	/* Elimina tutti i membri dei progetti di un utente */
+	@Transactional
+	public void deleteAllProjectsMembers(Utente utente)
+	{
+		/* Elimino i collegamenti ai progetti visibili */
+		List<Progetto> visibili = utente.getProgettiVisibili();
+	    Iterator<Progetto> iterator = visibili.iterator();
+	    
+	    while(iterator.hasNext()) 
+	    {
+	    	Progetto p = iterator.next();
+	    	p.getMembri().clear();
+	    	this.progettoRepository.save(p);
+	    }
+	}
+	
+	/* Elimina un membro da un progetto */
+	public Progetto deleteMembro(Progetto progetto, Utente membro)
+	{
+		progetto.getMembri().remove(membro);
+		membro.getProgettiVisibili().remove(progetto);
+		this.utenteService.save(membro);
+		return this.save(progetto);
 	}
 }

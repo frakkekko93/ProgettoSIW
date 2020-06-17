@@ -11,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import it.uniroma3.siw.progetto.controller.session.SessionData;
-import it.uniroma3.siw.progetto.model.Progetto;
 import it.uniroma3.siw.progetto.model.Ruolo;
 import it.uniroma3.siw.progetto.model.Utente;
 import it.uniroma3.siw.progetto.service.ProgettoService;
@@ -89,15 +88,7 @@ public class AdminController
 		if(comando.equals("elimina")) 
 		{
 			/* Elimino i collegamenti ai progetti visibili */
-			List<Progetto> visibili = utente.getProgettiVisibili();
-		    Iterator<Progetto> iterator = visibili.iterator();
-		    
-		    while(iterator.hasNext()) 
-		    {
-		    	Progetto p = iterator.next();
-		    	p.getMembri().clear();
-		    	this.progettoService.save(p);
-		    }
+		    this.progettoService.deleteAllProjectsMembers(utente);
 		    
 		    /* Elimino utente e ruolo */
 		    Ruolo r = this.ruoloService.getRuolo(utente);
