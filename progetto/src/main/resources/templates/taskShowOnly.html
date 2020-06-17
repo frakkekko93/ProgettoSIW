@@ -13,12 +13,31 @@
 			<tr>
 			    <th>Descrizione</th>
 			    <th>Assegnato a</th>
+			    <th>Azioni</th>
 			</tr>
 			</thead>
 			<tbody>
 				<tr>
 				    <td th:text="${task.descrizione}"></td>
 				    <td th:text="${task?.responsabile?.username}"></td>
+				    <td><form th:action = "@{'/showFormComment' + '?progetto=' + ${progetto.id} + '&task=' + ${task.id}}" method="POST">
+				    <input  type="submit" value="commenta" name="button">  </form> </td>
+				</tr>
+			</tbody>
+		</table>
+		
+		<h2>COMMENTI</h2>
+		<table style="width:100%">
+		<thead>
+				<tr>
+				    <th>Autore</th>
+				    <th>Testo</th>
+				</tr>
+			</thead>
+			<tbody>	
+				<tr th:each="commento: ${task.commenti}">
+				    <td th:text="${commento.autore}"></td>
+				    <td th:text="${commento.testo}"></td>
 				</tr>
 			</tbody>
 		</table>

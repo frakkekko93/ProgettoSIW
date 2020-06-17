@@ -3,6 +3,8 @@ package it.uniroma3.siw.progetto.model;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -34,9 +37,12 @@ public class Task
 	@ManyToMany(fetch=FetchType.LAZY)
 	private List<Tag> tags;
 	
+	@OneToMany(mappedBy = "task", cascade = CascadeType.REMOVE)
+	private List<Commento> commenti;
+	
 	@OneToOne
 	private Utente responsabile;
-	
+
 	/* Costruttore */
 	public Task() 
 	{
@@ -113,5 +119,13 @@ public class Task
 	public void setResponsabile(Utente responsabile) 
 	{
 		this.responsabile = responsabile;
+	}
+	
+	public List<Commento> getCommenti() {
+		return commenti;
+	}
+
+	public void setCommenti(List<Commento> commenti) {
+		this.commenti = commenti;
 	}
 }

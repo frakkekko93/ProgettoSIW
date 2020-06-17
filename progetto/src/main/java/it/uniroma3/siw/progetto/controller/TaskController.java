@@ -1,8 +1,5 @@
 package it.uniroma3.siw.progetto.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -219,10 +216,23 @@ public class TaskController
         return "task";
 	}
 	
+	@RequestMapping(value= {"/showFormComment"}, method = RequestMethod.POST)
+	public String showFormComment(Model model, HttpServletRequest request)
+	{
+		Progetto progetto = this.progettoService.getProgetto(Long.parseLong(request.getParameter("progetto")));
+		Task task = this.taskService.getTask(Long.parseLong(request.getParameter("task")));
+		model.addAttribute("progetto", progetto);
+		model.addAttribute("task", task);
+		return "addComment";
+	}
+	
+	
 	/* Aggiungi un commento al task*/
 	@RequestMapping(value= {"/addComment"}, method = RequestMethod.POST)
 	public String addComment(Model model, HttpServletRequest request,@AuthenticationPrincipal OAuth2User principal)
 	{
+		Progetto progetto = this.progettoService.getProgetto(Long.parseLong(request.getParameter("progetto")));
+		Task task = this.taskService.getTask(Long.parseLong(request.getParameter("task")));
 		Utente utente = this.sessionData.getLoggedUser(principal);
 		String user = utente.getUsername();
 		String comando = request.getParameter("button");
@@ -234,6 +244,9 @@ public class TaskController
 			if(testo == null || testo.isEmpty())
 			{
 				model.addAttribute("testoText", testo);
+				model.addAttribute("progetto", progetto);
+				model.addAttribute("task", task);
+				model.addAttribute("erroreCommento", "Il commento è obbligatorio");
 				return "addComment";
 			}
 			else
@@ -241,16 +254,17 @@ public class TaskController
 				Commento commento = new Commento();
 				commento.setTesto(testo);
 				commento.setAutore(user);
-				commentoService.save(commento);
-				model.addAttribute("commento", commento);
+				commento.setTask(task);
+				commento = commentoService.save(commento);
+				task.getCommenti().add(commento);
+				this.taskService.save(task);				
 			}
 		}
 		
+		model.addAttribute("progetto", progetto);
+		model.addAttribute("task", task);
 		
-		
-		
-		
-		return "assignedTask";
+		return "taskShowOnly";
 		
 	}
 

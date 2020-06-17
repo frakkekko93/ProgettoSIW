@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Commento {
@@ -18,6 +19,9 @@ public class Commento {
 	@Column(nullable = false)
 	private String testo;
 	
+	@ManyToOne
+	private Task task;
+
 	public Commento()
 	{
 		
@@ -47,5 +51,11 @@ public class Commento {
 		this.testo = testo;
 	}
 	
-	
+	public Task getTask() {
+		return task;
+	}
+
+	public void setTask(Task task) {
+		this.task = task;
+	}
 }
