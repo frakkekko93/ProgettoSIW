@@ -8,11 +8,12 @@
 	<body>
 		<h1 th:text="${task.nome}"></h1>
 		
-		<table style="width:100%">
+		<table>
 		<thead>
 			<tr>
 			    <th>Descrizione</th>
 			    <th>Assegnato a</th>
+			    <th>Completato</th>
 			    <th>Azioni</th>
 			</tr>
 			</thead>
@@ -20,14 +21,18 @@
 				<tr>
 				    <td th:text="${task.descrizione}"></td>
 				    <td th:text="${task?.responsabile?.username}"></td>
-				    <td><form th:action = "@{'/showFormComment' + '?progetto=' + ${progetto.id} + '&task=' + ${task.id}}" method="POST">
-				    <input  type="submit" value="commenta" name="button">  </form> </td>
+				    <td th:text="${task.completato}"></td>
+				    <td>
+				    	<form th:action = "@{'/showFormComment' + '?progetto=' + ${progetto.id} + '&task=' + ${task.id}}" method="POST">
+				    		<input  type="submit" value="commenta" name="button">  
+			    		</form> 
+		    		</td>
 				</tr>
 			</tbody>
 		</table>
 		
 		<h2>COMMENTI</h2>
-		<table style="width:100%">
+		<table>
 		<thead>
 				<tr>
 				    <th>Autore</th>
@@ -43,7 +48,7 @@
 		</table>
 		
 		<h2>TAG</h2>
-		<table style="width:100%">
+		<table>
 		<thead>
 				<tr>
 				    <th>Nome</th>

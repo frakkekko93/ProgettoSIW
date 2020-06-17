@@ -7,44 +7,44 @@
 	</head>
 	<body>
 		<h1 th:text="${progetto.nome}"></h1>
-		<table style="width:100%">
-		<thead>
-			<tr>
-			    <th>Descrizione</th>
-			    <th>Azioni</th>
-			</tr>
+		<table>
+			<thead>
+				<tr>
+				    <th>Descrizione</th>
+				    <th>Azioni</th>
+				</tr>
 			</thead>
 			<tbody>	
-			<tr>
-			    <td th:text="${progetto.descrizione}"></td>
-			    <td><form th:action="@{'/editProject' + '?progetto=' + ${progetto.id}}" method="POST">
-						<button type="submit" value="update" name="submit">aggiorna</button>
-						<button type="submit" value="delete" name="submit">cancella</button>
-					</form>
-	    		</td>
-			</tr>
+				<tr>
+				    <td th:text="${progetto.descrizione}"></td>
+				    <td><form th:action="@{'/editProject' + '?progetto=' + ${progetto.id}}" method="POST">
+							<button type="submit" value="update" name="submit">aggiorna</button>
+							<button type="submit" value="delete" name="submit">cancella</button>
+						</form>
+		    		</td>
+				</tr>
 			</tbody>
 		</table>
 			
 		<h2>TASK</h2>
 		
-		<table style="width:100%">
-		<thead>
-			<tr>
-			    <th>Nome task</th>
-			    <th>Descrizione</th>
-			    <th>Azioni</th>
-			</tr>
+		<table>
+			<thead>
+				<tr>
+				    <th>Nome task</th>
+				    <th>Descrizione</th>
+				    <th>Azioni</th>
+				</tr>
 			</thead>
 			<tbody>
-			<tr th:each="task: ${progetto.tasks}">
-			    <td th:text="${task.nome}" id="nomeTask"></td>
-			    <td th:text="${task.descrizione}"></td>
-				<td><form th:action="@{'/showTask' + '?progetto=' + ${progetto.id} + '&task=' + ${task.id}}" method="POST">
-						<button type="submit" value="showTask" name="submit">visualizza</button>
-					</form>
-	    		</td>
-			</tr>
+				<tr th:each="task: ${progetto.tasks}">
+				    <td th:text="${task.nome}" id="nomeTask"></td>
+				    <td th:text="${task.descrizione}"></td>
+					<td><form th:action="@{'/showTask' + '?progetto=' + ${progetto.id} + '&task=' + ${task.id}}" method="POST">
+							<button type="submit" value="showTask" name="submit">visualizza</button>
+						</form>
+		    		</td>
+				</tr>
 			</tbody>
 		</table>
 		<form th:action="@{'/editTasks' + '?progetto=' + ${progetto.id}}" method="POST">
@@ -52,23 +52,23 @@
 		</form>		
 		
 		<h2>MEMBRI</h2>
-		<table style="width:100%">
-		<thead>
-			<tr>
-			    <th>Username</th>
-			    <th>Mail</th>
-			    <th>Azioni</th>
-			</tr>
+		<table>
+			<thead>
+				<tr>
+				    <th>Username</th>
+				    <th>Mail</th>
+				    <th>Azioni</th>
+				</tr>
 			</thead>
 			<tbody>	
-			<tr th:each="membro: ${progetto.membri}">
-			    <td th:text="${membro.username}" id="userMebro"></td>
-			    <td th:text="${membro.mail}"></td>
-			    <td><form th:action="@{'/editMembers' + '?progetto=' + ${progetto.id} + '&membro=' + ${membro.id}}" method="POST">
-						<button type="submit" value="deleteMembro" name="submit">cancella membro</button>
-					</form>
-	    		</td>
-			</tr>
+				<tr th:each="membro: ${progetto.membri}">
+				    <td th:text="${membro.username}" id="userMebro"></td>
+				    <td th:text="${membro.mail}"></td>
+				    <td><form th:action="@{'/editMembers' + '?progetto=' + ${progetto.id} + '&membro=' + ${membro.id}}" method="POST">
+							<button type="submit" value="deleteMembro" name="submit">cancella membro</button>
+						</form>
+		    		</td>
+				</tr>
 			</tbody>
 		</table>
 		<form th:action="@{'/editProject' + '?progetto=' + ${progetto.id}}" method="POST">
@@ -77,20 +77,20 @@
 		
 		
 		<h2>TAG</h2>
-		<table style="width:100%">
-		<thead>
-			<tr>
-			    <th>Nome</th>
-			    <th>Colore</th>
-			    <th>Descrizione</th>
-			</tr>
+		<table>
+			<thead>
+				<tr>
+				    <th>Nome</th>
+				    <th>Colore</th>
+				    <th>Descrizione</th>
+				</tr>
 			</thead>
 			<tbody>	
-			<tr th:each="tag: ${progetto.tags}">
-			    <td th:text="${tag.nome}" id="nomeTag"></td>
-			    <td th:text="${tag.descrizione}"></td>
-			    <td th:text="${tag.colore}"></td>
-			</tr>
+				<tr th:each="tag: ${progetto.tags}">
+				    <td th:text="${tag.nome}" id="nomeTag"></td>
+				    <td th:text="${tag.descrizione}"></td>
+				    <td th:text="${tag.colore}"></td>
+				</tr>
 			</tbody>
 		</table>
 		<form th:action="@{'/editProject' + '?progetto=' + ${progetto.id}}" method="POST">

@@ -7,55 +7,64 @@
 	</head>
 	<body>
 		<h1 th:text="${progetto.nome}"></h1>
-		<table style="width:100%">
-		<thead>
-			<tr>
-			    <th>Descrizione</th>
-			</tr>	
+		<table>
+			<thead>
+				<tr>
+				    <th>Descrizione</th>
+				</tr>	
 			</thead>
 			<tbody>
-			<tr>
-			    <td th:text="${progetto.descrizione}"></td>
-			</tr>
+				<tr>
+				    <td th:text="${progetto.descrizione}"></td>
+				</tr>
 			</tbody>
 		</table>
 			
 		<h2>TASK</h2>
 		
-		<table style="width:100%">
-		<thead>
-			<tr>
-			    <th>Nome task</th>
-			    <th>Descrizione</th>
-			    <th>Azioni</th>
-			</tr>
+		<table>
+			<thead>
+				<tr>
+				    <th>Nome task</th>
+				    <th>Descrizione</th>
+				    <th>Completato</th>
+				    <th>Azioni</th>
+				</tr>
 			</thead>
 			<tbody>
-			<tr th:each="task: ${progetto.tasks}">
-			    <td th:text="${task.nome}" id="nomeTask"></td>
-			    <td th:text="${task.descrizione}"></td>
-			    <td><form th:action="@{'/showOnlyTask' + '?progetto=' + ${progetto.id} + '&task=' + ${task.id}}" method="POST">
-						<button type="submit" value="showTask" name="submit">visualizza</button>
-					</form>
-	    		</td>			    
-			</tr>
+				<tr th:each="task: ${progetto.tasks}">
+				    <td th:text="${task.nome}" id="nomeTask"></td>
+				    <td th:text="${task.descrizione}"></td>
+				    <td th:text="${task.completato}"></td>
+				    <td><form th:action="@{'/showOnlyTask' + '?progetto=' + ${progetto.id} + '&task=' + ${task.id}}" method="POST">
+							<button type="submit" value="showTask" name="submit">visualizza</button>
+						</form>
+		    		</td>			    
+				</tr>
 			</tbody>
 		</table>	
 		
 		<h2>TASK ASSEGNATI</h2>
 		
-		<table style="width:100%">
-		<thead>
-			<tr>
-			    <th>Nome task</th>
-			    <th>Descrizione</th>
-			</tr>
+		<table>
+			<thead>
+				<tr>
+				    <th>Nome task</th>
+				    <th>Descrizione</th>
+				    <th>Completato</th>
+				    <th>Azioni</th>
+				</tr>
 			</thead>
 			<tbody>
-			<tr th:each="task: ${assignedTasks}">
-			    <td th:text="${task.nome}" id="nomeTask"></td>
-			    <td th:text="${task.descrizione}"></td>			    
-			</tr>
+				<tr th:each="task: ${assignedTasks}">
+				    <td th:text="${task.nome}" id="nomeTask"></td>
+				    <td th:text="${task.descrizione}"></td>	
+				    <td th:text="${task.completato}"></td>	
+				    <td><form th:action="@{'/assignedTask/complete' + '?progetto=' + ${progetto.id} + '&task=' + ${task.id}}" method="POST">
+							<button type="submit" value="complete" name="submit">segna completato</button>
+						</form>
+		    		</td>	    
+				</tr>
 			</tbody>
 		</table>
 		

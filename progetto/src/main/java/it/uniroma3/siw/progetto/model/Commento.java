@@ -8,8 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class Commento {
-
+public class Commento 
+{
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;
@@ -22,40 +22,50 @@ public class Commento {
 	@ManyToOne
 	private Task task;
 
+	/* Costruttore */
 	public Commento()
 	{
 		
 	}
 
-	public long getId() {
+	/* Getters and Setters */
+	public long getId() 
+	{
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(long id) 
+	{
 		this.id = id;
 	}
 
-	public String getAutore() {
+	public String getAutore() 
+	{
 		return autore;
 	}
 
-	public void setAutore(String autore) {
+	public void setAutore(String autore) 
+	{
 		this.autore = autore;
 	}
 
-	public String getTesto() {
+	public String getTesto() 
+	{
 		return testo;
 	}
 
-	public void setTesto(String testo) {
+	public void setTesto(String testo) 
+	{
 		this.testo = testo;
 	}
 	
-	public Task getTask() {
+	public Task getTask() 
+	{
 		return task;
 	}
 
-	public void setTask(Task task) {
+	public void setTask(Task task) 
+	{
 		this.task = task;
 	}
 }

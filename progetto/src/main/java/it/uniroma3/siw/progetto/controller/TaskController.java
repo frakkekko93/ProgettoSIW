@@ -8,7 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
 import it.uniroma3.siw.progetto.controller.session.SessionData;
 import it.uniroma3.siw.progetto.controller.validator.TaskValidator;
 import it.uniroma3.siw.progetto.model.Commento;
@@ -39,7 +38,7 @@ public class TaskController
 	protected CommentoService commentoService;
 	
 	/* Mostra le informazioni del task */
-	@RequestMapping(value= {"/showTask"}, method = RequestMethod.POST)
+	@RequestMapping(value= {"/showTask"})
 	public String showTask(Model model, HttpServletRequest request)
 	{
 		Progetto progetto = this.progettoService.getProgetto(Long.parseLong(request.getParameter("progetto")));
@@ -51,7 +50,7 @@ public class TaskController
 		return "task";
 	}
 	
-	/* Mostra le informazioni del task */
+	/* Mostra le informazioni del task di un progetto di cui sono membro */
 	@RequestMapping(value= {"/showOnlyTask"}, method = RequestMethod.POST)
 	public String showOnlyTask(Model model, HttpServletRequest request)
 	{
@@ -62,6 +61,23 @@ public class TaskController
 		model.addAttribute("task", task);
 		
 		return "taskShowOnly";
+	}
+	
+	/* Effettua un operazione sul progetto selezionato */
+	@RequestMapping(value= {"/assignedTask/complete"}, method = RequestMethod.POST)
+	public String completeAssignedTask(Model model, HttpServletRequest request, @AuthenticationPrincipal OAuth2User principal)
+	{
+		Utente membro = sessionData.getLoggedUser(principal);
+		Progetto progetto = this.progettoService.getProgetto(Long.parseLong(request.getParameter("progetto")));
+		Task task = this.taskService.getTask(Long.parseLong(request.getParameter("task")));
+
+		task.setCompletato(!task.isCompletato());
+		this.taskService.save(task);
+		
+		model.addAttribute("assignedTasks", taskService.assignedTasks(progetto, membro));
+		model.addAttribute("task", task);
+		model.addAttribute("progetto", progetto);
+		return "assignedTask";
 	}
 	
 	/* Effettua un operazione sul progetto selezionato */
@@ -80,14 +96,21 @@ public class TaskController
 		}
 		else
 		{
-			/* Aggiungo il task al modello */
+			/* Prendo il task */
 			task=this.taskService.getTask(Long.parseLong(request.getParameter("task")));
-			model.addAttribute("task", task);
 			
 			/* Rimanda all form di assegnazione di un task ad un membro */
 			if(comando.equals("assign"))
 			{
 				vista = "assignTask";
+			}
+			
+			/* Rimanda all form di assegnazione di un task ad un membro */
+			if(comando.equals("complete"))
+			{
+				task.setCompletato(!task.isCompletato());
+				this.taskService.save(task);
+				vista = "task";
 			}
 			
 			/* Rimanda all form di assegnazione di un tag ad un tag */
@@ -109,6 +132,9 @@ public class TaskController
 				this.taskService.delete(task);
 				vista = "project";
 			}
+			
+			/* Aggiungo il task al modello */
+			model.addAttribute("task", task);
 		}
 		
 		model.addAttribute("progetto", progetto);
@@ -185,6 +211,7 @@ public class TaskController
 			{
 				/* Salvo i campi inseriti dall'utente e torno alla form */
 				model.addAttribute("task", task);
+				model.addAttribute("progetto", progetto);
 				return "updateTask";
 			}
 		}

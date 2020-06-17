@@ -3,7 +3,6 @@ package it.uniroma3.siw.progetto.model;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -34,6 +33,8 @@ public class Task
 	@ManyToOne
 	private Progetto progetto;
 	
+	private boolean completato;
+	
 	@ManyToMany(fetch=FetchType.LAZY)
 	private List<Tag> tags;
 	
@@ -48,6 +49,7 @@ public class Task
 	{
 		this.tags = new ArrayList<>();
 		this.dataCreazione = LocalDateTime.now();
+		this.completato = false;
 	}
 
 	/* Setters and getters */
@@ -121,11 +123,23 @@ public class Task
 		this.responsabile = responsabile;
 	}
 	
-	public List<Commento> getCommenti() {
+	public List<Commento> getCommenti() 
+	{
 		return commenti;
 	}
 
-	public void setCommenti(List<Commento> commenti) {
+	public void setCommenti(List<Commento> commenti) 
+	{
 		this.commenti = commenti;
+	}
+
+	public boolean isCompletato() 
+	{
+		return completato;
+	}
+
+	public void setCompletato(boolean completato) 
+	{
+		this.completato = completato;
 	}
 }
