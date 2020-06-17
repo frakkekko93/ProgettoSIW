@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="it" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+	<head>
+		<link rel="stylesheet" th:href="@{/css/tableListProject.css}"/>
+	    <meta charset="UTF-8">
+	    <title>Progetto</title>
+	</head>
+	<body>
+		<h1>Aggiorna il tuo profilo</h1>
+		<form action = "editProfile" method = "POST"> 
+			<div>Nome: <input type="text" th:value="${utente.nome}"  name="nomeInput"/> <p th:text="${erroreNome}" style="color: red"></p> </div>   
+			<div>Cognome: <input type="text" th:value="${utente.cognome}"  name="cognomeInput"/> <p th:text="${erroreCognome}" style="color: red"></p> </div> 
+	    	<div>Email: <input type="text" th:value="${utente.mail}"  name="mailInput"/> <p th:text="${erroreMail}" style="color: red"></p> </div> 
+	      	<div><input type="submit" name="submit" value="invia" /><input type="submit" name="submit" value="annulla"></div>
+	    </form>
+	</body>	
+</html>

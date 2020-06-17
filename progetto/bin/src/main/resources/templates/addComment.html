@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="it" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+	<head>
+	    <meta charset="UTF-8">
+	    <title>Progetto</title>
+	</head>
+	<body>
+		<h1>Inserisci un commento</h1>
+		<form th:action="@{'/addComment' + '?progetto=' + ${progetto.id} + '&task=' + ${task.id}}" method="POST">
+			<div>Commento: </div>
+			<div><textarea name="testo" rows="10" cols="30" th:text="${testoText}"></textarea></div> 
+			<p th:text="${erroreCommento}" style="color:red"></p>
+			<div><input type="submit" name="button" value="invia"><input type="submit" name="button" value="annulla"></div>
+		</form>
+	</body>
+</html>

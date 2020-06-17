@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="it" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+	<head>
+	    <meta charset="UTF-8">
+	    <title>Progetto</title>
+	</head>
+	<body>
+		<h1>Crea un nuovo progetto</h1>
+		<form action="/new" method="POST">
+			<div>Nome Progetto: <input type="text" name="nome" th:value="${nomeText}"><p th:text="${erroreNome}" style="color:red"></p></div>
+			<div>Descrizione: </div>
+			<div><textarea name="descrizione" rows="10" cols="30" th:text="${descrizioneText}"></textarea></div>
+			<p th:text="${erroreDescrizione}" style="color:red">
+			<div><input type="submit" name="button" value="invia"><input type="submit" name="button" value="annulla"></div>
+		</form>
+	</body>
+</html>

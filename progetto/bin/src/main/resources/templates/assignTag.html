@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="it" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+	<head>
+		<link rel="stylesheet" th:href="@{/css/tableListProject.css}"/>
+	    <meta charset="UTF-8">
+	    <title>Progetto</title>
+	</head>
+	<body>
+		<h1>Scegli il tag da assegnare al task</h1>
+		
+		<h2>TAG DEL PROGETTO</h2>
+		<table>
+		<thead>
+			<tr>
+			    <th>Nome</th>
+			    <th>Descrizione</th>
+			    <th>Colore</th>
+			    <th>Azioni</th>
+			</tr>	
+			</thead>
+			<tbody>
+			<tr th:each="tag: ${progetto.tags}">
+			    <td th:text="${tag.nome}"></td>
+			    <td th:text="${tag.descrizione}"></td>
+			    <td th:text="${tag.colore}"></td>
+			    <td><form th:action="@{'/assignTag' + '?progetto=' + ${progetto.id} + '&task=' + ${task.id} + '&tag=' + ${tag.id}}" method="POST">
+						<button type="submit" value="assign" name="submit">assegna</button>
+					</form>
+	    		</td>
+			</tr>
+			</tbody>
+		</table>
+		
+		<div class="footer"><a th:href="@{'/showTask' + '?progetto=' + ${progetto.id} + '&task=' + ${task.id}}">Torna Indietro</a></div>
+	</body>
+</html>

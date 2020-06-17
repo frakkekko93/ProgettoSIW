@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="it" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+	<head>
+		<link rel="stylesheet" th:href="@{/css/tableListProject.css}"/>
+	    <meta charset="UTF-8">
+	    <title>Progetto</title>
+	</head>
+	<body>
+		<h1>Utente da eliminare</h1>
+	 	
+	 	<table>
+			<tr>
+			    <td>Username:</td>
+			    <td th:text="${utente.username}">...</td>
+			</tr>
+			<tr>
+			    <td>Nome:</td>
+			    <td th:text="${utente.nome}">...</td>
+			</tr>
+			<tr>
+			    <td>Cognome:</td>
+			    <td th:text="${utente.cognome}">...</td>
+			</tr>
+			<tr>
+			    <td>Indirizzo email:</td>
+			    <td th:text="${utente.mail}">...</td>
+			</tr>
+			<tr>
+			    <td>Ruolo:</td>
+			    <td th:text="${ruolo.ruolo}">...</td>
+			</tr>
+			<tr>
+			    <td>Registrato il: </td>
+			    <td th:text="${utente.dataDiCreazione}">...</td>
+			</tr>	
+ 		</table>
+       	<form th:action="@{'/deleteUtente' + '?utente=' + ${utente.id}}" method="POST">
+			<button type="submit" value="elimina" name="submit">elimina</button>
+		</form>
+       	<div>Annulla: <a href="/userHome">clicca qui</a></div>
+	</body>
+</html>

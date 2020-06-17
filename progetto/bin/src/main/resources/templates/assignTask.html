@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="it" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+	<head>
+		<link rel="stylesheet" th:href="@{/css/tableListProject.css}"/>
+	    <meta charset="UTF-8">
+	    <title>Progetto</title>
+	</head>
+	<body>
+		<h1>Scegli l'utente a cui assegnare il task</h1>
+		
+		<h2>MEMBRI DEL PROGETTO</h2>
+		<table>
+		<thead>
+			<tr>
+			    <th>Username</th>
+			    <th>Mail</th>
+			    <th>Azioni</th>
+			</tr>	
+			</thead>
+			<tbody>
+			<tr th:each="membro: ${progetto.membri}">
+			    <td th:text="${membro.username}" id="userMebro"></td>
+			    <td th:text="${membro.mail}"></td>
+			    <td><form th:action="@{'/assignTask' + '?progetto=' + ${progetto.id} + '&membro=' + ${membro.id}} + '&task=' + ${task.id}" method="POST">
+						<button type="submit" value="assign" name="submit">assegna</button>
+					</form>
+	    		</td>
+			</tr>
+			</tbody>
+		</table>
+	</body>
+</html>

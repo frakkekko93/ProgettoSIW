@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="it" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+	<head>
+		<link rel="stylesheet" th:href="@{/css/tableListProject.css}"/>
+	    <meta charset="UTF-8">
+	    <title>Progetto</title>
+	</head>
+	<body>
+		<h1>Aggiorna i dati del progetto</h1>
+		<form th:action="@{'/updateProject' + '?progetto=' + ${progetto.id}}" method="POST">
+			<div>Nome Progetto: <input type="text" name="nome" th:value="${progetto.nome}"><p th:text="${erroreNome}" style="color:red"></p></div>
+			<div>Descrizione: </div>
+			<div><textarea name="descrizione" rows="10" cols="30" th:text="${progetto.descrizione}"></textarea></div>
+			<p th:text="${erroreDescrizione}" style="color:red">
+			<div><input type="submit" name="button" value="aggiorna"><input type="submit" name="button" value="annulla"></div>
+		</form>
+	</body>
+</html>

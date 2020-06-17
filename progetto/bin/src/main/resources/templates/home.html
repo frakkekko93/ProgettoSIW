@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="it" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+	<head>
+		<link rel="stylesheet" th:href="@{/css/tableListProject.css}"/>
+	    <meta charset="UTF-8">
+	    <title>Progetto</title>
+	</head>
+	<body>
+		<h1>Home Utente</h1>
+		<div>Visualizza il tuo profilo: <a href="/user/profile">clicca qui</a></div>
+		<div>Visualizza i tuoi progetti: <a href="/myProjects">clicca qui</a></div>
+		<div>Visualizza i progetti condivisi con me: <a href="/shareProjects">clicca qui</a></div>
+		<div>Crea un nuovo progetto: <a href="/new">clicca qui</a></div>
+		<form action="/logout" method="POST">
+    		<button type="submit" value="logout" name="submit">logout</button>
+    	</form>
+	</body>
+</html>

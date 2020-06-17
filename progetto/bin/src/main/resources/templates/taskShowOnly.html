@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="it" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+	<head>
+		<link rel="stylesheet" th:href="@{/css/tableListProject.css}"/>
+	    <meta charset="UTF-8">
+	    <title>Progetto</title>
+	</head>
+	<body>
+		<h1 th:text="${task.nome}"></h1>
+		
+		<table>
+		<thead>
+			<tr>
+			    <th>Descrizione</th>
+			    <th>Assegnato a</th>
+			    <th>Completato</th>
+			    <th>Azioni</th>
+			</tr>
+			</thead>
+			<tbody>
+				<tr>
+				    <td th:text="${task.descrizione}"></td>
+				    <td th:text="${task?.responsabile?.username}"></td>
+				    <td th:text="${task.completato}"></td>
+				    <td>
+				    	<form th:action = "@{'/showFormComment' + '?progetto=' + ${progetto.id} + '&task=' + ${task.id}}" method="POST">
+				    		<input  type="submit" value="commenta" name="button">  
+			    		</form> 
+		    		</td>
+				</tr>
+			</tbody>
+		</table>
+		
+		<h2>COMMENTI</h2>
+		<table>
+		<thead>
+				<tr>
+				    <th>Autore</th>
+				    <th>Testo</th>
+				</tr>
+			</thead>
+			<tbody>	
+				<tr th:each="commento: ${task.commenti}">
+				    <td th:text="${commento.autore}"></td>
+				    <td th:text="${commento.testo}"></td>
+				</tr>
+			</tbody>
+		</table>
+		
+		<h2>TAG</h2>
+		<table>
+		<thead>
+				<tr>
+				    <th>Nome</th>
+				    <th>Colore</th>
+				    <th>Descrizione</th>
+				</tr>
+			</thead>
+			<tbody>	
+				<tr th:each="tag: ${task.tags}">
+				    <td th:text="${tag.nome}" id="nomeTag"></td>
+				    <td th:text="${tag.descrizione}"></td>
+				    <td th:text="${tag.colore}"></td>
+				</tr>
+			</tbody>
+		</table>
+		
+		<div class="footer"><a th:href="@{'/showOnlyProject' + '?progetto=' + ${progetto.id}}">Torna Indietro</a></div>
+	</body>
+</html>

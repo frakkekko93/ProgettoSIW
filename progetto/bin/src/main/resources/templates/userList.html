@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="it" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+	<head>
+		<link rel="stylesheet" th:href="@{/css/tableListProject.css}"/>
+	    <meta charset="UTF-8">
+	    <title>Progetto</title>
+	</head>
+	<body>
+		<h1>Lista utenti</h1>
+		
+		<table>
+			<thead>
+				<tr>
+				    <th>Username</th>
+				    <th>Azioni</th>
+				</tr>	
+			</thead>
+			<tbody>
+				<tr th:each="utente: ${utenti}">
+				    <td th:text="${utente.username}" id="nomeUtente"></td>
+					<td>
+						<form th:action="@{'/viewUtente' + '?utente=' + ${utente.id}}" method="POST">
+				    		<button type="submit" value="visualizza" name="submit">Visualizza</button>
+				    	</form>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<div class="footer"><a href="/userHome">Home utente</a></div>
+	</body>
+</html>
