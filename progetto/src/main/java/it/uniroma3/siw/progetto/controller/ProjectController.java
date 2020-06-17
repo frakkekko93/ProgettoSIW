@@ -167,6 +167,7 @@ public class ProjectController
 			else
 			{
 				/* Salvo i campi inseriti dall'utente e torno alla form con gli errori */
+				model.addAttribute("progetto", progetto);
 				return "updateProject";
 			}
 		}
@@ -242,7 +243,7 @@ public class ProjectController
 	}
 	
 	/* Effettua un operazione sul progetto selezionato */
-	@RequestMapping(value= {"/showOnlyProject"}, method = RequestMethod.POST)
+	@RequestMapping(value= {"/showOnlyProject"})
 	public String showOnlyProject(@AuthenticationPrincipal OAuth2User principal, Model model, HttpServletRequest request)
 	{
 		Utente membro = sessionData.getLoggedUser(principal);

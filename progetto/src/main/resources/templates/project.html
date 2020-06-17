@@ -6,24 +6,21 @@
 	    <title>Progetto</title>
 	</head>
 	<body>
-		<h1>PROGETTO</h1>
+		<h1 th:text="${progetto.nome}"></h1>
 		<table style="width:100%">
 		<thead>
 			<tr>
-			    <th>Nome progetto</th>
 			    <th>Descrizione</th>
 			    <th>Azioni</th>
-			    <th></th>
 			</tr>
 			</thead>
 			<tbody>	
 			<tr>
-			    <td th:text="${progetto.nome}" id="nomeProgetto">></td>
 			    <td th:text="${progetto.descrizione}"></td>
 			    <td><form th:action="@{'/editProject' + '?progetto=' + ${progetto.id}}" method="POST">
-			<button type="submit" value="update" name="submit">aggiorna</button>
-			<button type="submit" value="delete" name="submit">cancella</button>
-		</form>
+						<button type="submit" value="update" name="submit">aggiorna</button>
+						<button type="submit" value="delete" name="submit">cancella</button>
+					</form>
 	    		</td>
 			</tr>
 			</tbody>
@@ -36,7 +33,6 @@
 			<tr>
 			    <th>Nome task</th>
 			    <th>Descrizione</th>
-			    <th>Assegnato a</th>
 			    <th>Azioni</th>
 			</tr>
 			</thead>
@@ -60,6 +56,7 @@
 		<thead>
 			<tr>
 			    <th>Username</th>
+			    <th>Mail</th>
 			    <th>Azioni</th>
 			</tr>
 			</thead>

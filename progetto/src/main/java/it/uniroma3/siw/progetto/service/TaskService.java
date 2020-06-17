@@ -8,6 +8,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import it.uniroma3.siw.progetto.model.Progetto;
+import it.uniroma3.siw.progetto.model.Tag;
 import it.uniroma3.siw.progetto.model.Task;
 import it.uniroma3.siw.progetto.model.Utente;
 import it.uniroma3.siw.progetto.repository.TaskRepository;
@@ -67,5 +68,25 @@ public class TaskService
 		}
 		
 		return returnList;
+	}
+	
+	/* Verifica se il progetto ha un tag con il nome specificato */
+	public boolean hasTag(String nome, Task task)
+	{
+		List<Tag> tags = task.getTags();
+		Iterator<Tag> it = tags.iterator();
+		
+		Tag t = null;
+		while(it.hasNext())
+		{
+			t = it.next();
+			
+			if(t.getNome().equals(nome))
+			{
+				return true;
+			}
+		}
+		
+		return false;
 	}
 }

@@ -26,6 +26,7 @@ public class TagController
 	@Autowired
 	protected TaskService taskService;
 	
+	/* Mostra la form di aggiunta del tag */
 	@RequestMapping(value= {"/addTag"}, method = RequestMethod.GET)
 	public String showAddTag(Model model, HttpServletRequest request) 
 	{
@@ -34,6 +35,7 @@ public class TagController
 		return "addTag";
 	}
 	
+	/* Aggiunge un tag al progetto */
 	@RequestMapping(value= {"/addTag"}, method = RequestMethod.POST)
 	public String addTag(Model model, HttpServletRequest request)
 	{
@@ -51,14 +53,17 @@ public class TagController
 			/* Se i dati sono validi */
 			if(validator.validate(request))
 			{
-				/* Aggiungo il task al progetto */
-				Tag tag = new Tag();
-				tag.setNome(nome);
-				tag.setDescrizione(descrizione);
-				tag.setColore(colore);
-				tag = tagService.save(tag);
-				progetto.getTags().add(tag);
-				progettoService.save(progetto);
+				if(!this.progettoService.hasTag(nome, progetto))
+				{
+					/* Aggiungo il tag al progetto */
+					Tag tag = new Tag();
+					tag.setNome(nome);
+					tag.setDescrizione(descrizione);
+					tag.setColore(colore);
+					tag = tagService.save(tag);
+					progetto.getTags().add(tag);
+					progettoService.save(progetto);
+				}
 			}
 			else
 			{
@@ -80,17 +85,22 @@ public class TagController
 	public String assignTag(Model model, HttpServletRequest request)
 	{
 		Tag tag = this.tagService.getTag(Long.parseLong(request.getParameter("tag")));
-		Task task = this.taskService.getTask(Long.parseLong(request.getParameter("task")));
 		Progetto progetto = this.progettoService.getProgetto(Long.parseLong(request.getParameter("progetto")));
+		Task task = this.taskService.getTask(Long.parseLong(request.getParameter("task")));
 		String comando = request.getParameter("submit");
 		
 		if(comando.equals("assign"))
 		{
-			task.getTags().add(tag);
-			this.taskService.save(task);
+			if(!this.taskService.hasTag(tag.getNome(), task))
+			{
+				/* Aggiungo il tag al task */
+				task.getTags().add(tag);
+				this.taskService.save(task);
+			}
 		}
 		
+		model.addAttribute("task", task);
 		model.addAttribute("progetto", progetto);
-		return "project";
+		return "task";
 	}
 }

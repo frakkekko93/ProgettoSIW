@@ -6,17 +6,15 @@
 	    <title>Progetto</title>
 	</head>
 	<body>
-		<h1>PROGETTO</h1>
+		<h1 th:text="${progetto.nome}"></h1>
 		<table style="width:100%">
 		<thead>
 			<tr>
-			    <th>Nome progetto</th>
 			    <th>Descrizione</th>
 			</tr>	
 			</thead>
 			<tbody>
 			<tr>
-			    <td th:text="${progetto.nome}" id="nomeProgetto">></td>
 			    <td th:text="${progetto.descrizione}"></td>
 			</tr>
 			</tbody>
@@ -29,12 +27,17 @@
 			<tr>
 			    <th>Nome task</th>
 			    <th>Descrizione</th>
+			    <th>Azioni</th>
 			</tr>
 			</thead>
 			<tbody>
 			<tr th:each="task: ${progetto.tasks}">
 			    <td th:text="${task.nome}" id="nomeTask"></td>
-			    <td th:text="${task.descrizione}"></td>			    
+			    <td th:text="${task.descrizione}"></td>
+			    <td><form th:action="@{'/showOnlyTask' + '?progetto=' + ${progetto.id} + '&task=' + ${task.id}}" method="POST">
+						<button type="submit" value="showTask" name="submit">visualizza</button>
+					</form>
+	    		</td>			    
 			</tr>
 			</tbody>
 		</table>	

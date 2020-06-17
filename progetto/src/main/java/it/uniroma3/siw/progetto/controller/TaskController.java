@@ -54,6 +54,19 @@ public class TaskController
 		return "task";
 	}
 	
+	/* Mostra le informazioni del task */
+	@RequestMapping(value= {"/showOnlyTask"}, method = RequestMethod.POST)
+	public String showOnlyTask(Model model, HttpServletRequest request)
+	{
+		Progetto progetto = this.progettoService.getProgetto(Long.parseLong(request.getParameter("progetto")));
+		Task task = this.taskService.getTask(Long.parseLong(request.getParameter("task")));
+		
+		model.addAttribute("progetto", progetto);
+		model.addAttribute("task", task);
+		
+		return "taskShowOnly";
+	}
+	
 	/* Effettua un operazione sul progetto selezionato */
 	@RequestMapping(value= {"/editTasks"}, method = RequestMethod.POST)
 	public String editTasks(Model model, HttpServletRequest request)
@@ -122,19 +135,23 @@ public class TaskController
 			/* Se i dati sono validi */
 			if(validator.validate(request))
 			{
-				/* Aggiungo il task al progetto */
-				Task task = new Task();
-				task.setNome(nome);
-				task.setDescrizione(descrizione);
-				progetto.getTasks().add(task);
-				this.taskService.save(task);
-				this.taskService.addTask(progetto, task);
+				if(!this.progettoService.hasTask(nome, progetto))
+				{
+					/* Aggiungo il task al progetto */
+					Task task = new Task();
+					task.setNome(nome);
+					task.setDescrizione(descrizione);
+					progetto.getTasks().add(task);
+					this.taskService.save(task);
+					this.taskService.addTask(progetto, task);
+				}
 			}
 			else
 			{
 				/* Salvo i campi inseriti dall'utente e torno alla form */
 				model.addAttribute("nomeText", nome);
 				model.addAttribute("descrizioneText", descrizione);
+				model.addAttribute("progetto", progetto);
 				return "addTask";
 			}
 		}
@@ -176,7 +193,8 @@ public class TaskController
 		}
 
 		model.addAttribute("progetto", progetto);
-        return "project";
+		model.addAttribute("task", task);
+        return "task";
 	}
 	
 	/* Assegna un task ad un membro del progetto */
@@ -196,8 +214,9 @@ public class TaskController
 			this.taskService.save(task);
 		}
 
+		model.addAttribute("task", task);
 		model.addAttribute("progetto", progetto);
-        return "project";
+        return "task";
 	}
 	
 	/* Aggiungi un commento al task*/
