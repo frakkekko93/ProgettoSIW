@@ -1,15 +1,24 @@
 package it.uniroma3.siw.progetto.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import it.uniroma3.siw.progetto.controller.session.SessionData;
 import it.uniroma3.siw.progetto.controller.validator.TaskValidator;
+import it.uniroma3.siw.progetto.model.Commento;
 import it.uniroma3.siw.progetto.model.Progetto;
 import it.uniroma3.siw.progetto.model.Task;
 import it.uniroma3.siw.progetto.model.Utente;
+import it.uniroma3.siw.progetto.service.CommentoService;
 import it.uniroma3.siw.progetto.service.ProgettoService;
 import it.uniroma3.siw.progetto.service.TaskService;
 import it.uniroma3.siw.progetto.service.UtenteService;
@@ -25,6 +34,12 @@ public class TaskController
 	
 	@Autowired
 	protected UtenteService utenteService;
+	
+	@Autowired
+	protected SessionData sessionData;
+	
+	@Autowired
+	protected CommentoService commentoService;
 	
 	/* Mostra le informazioni del task */
 	@RequestMapping(value= {"/showTask"}, method = RequestMethod.POST)
@@ -184,4 +199,40 @@ public class TaskController
 		model.addAttribute("progetto", progetto);
         return "project";
 	}
+	
+	/* Aggiungi un commento al task*/
+	@RequestMapping(value= {"/addComment"}, method = RequestMethod.POST)
+	public String addComment(Model model, HttpServletRequest request,@AuthenticationPrincipal OAuth2User principal)
+	{
+		Utente utente = this.sessionData.getLoggedUser(principal);
+		String user = utente.getUsername();
+		String comando = request.getParameter("button");
+		String testo = request.getParameter("testo");
+		
+		
+		if(comando.equals("invia"))
+		{
+			if(testo == null || testo.isEmpty())
+			{
+				model.addAttribute("testoText", testo);
+				return "addComment";
+			}
+			else
+			{
+				Commento commento = new Commento();
+				commento.setTesto(testo);
+				commento.setAutore(user);
+				commentoService.save(commento);
+				model.addAttribute("commento", commento);
+			}
+		}
+		
+		
+		
+		
+		
+		return "assignedTask";
+		
+	}
+
 }
