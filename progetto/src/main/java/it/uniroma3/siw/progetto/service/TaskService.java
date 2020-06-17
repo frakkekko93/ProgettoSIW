@@ -18,14 +18,14 @@ public class TaskService
 {
 	@Autowired
 	protected TaskRepository taskRepository;
-	
+
 	/* Salva un task nel repository */
 	@Transactional
 	public void save(Task task)
 	{
 		this.taskRepository.save(task);
 	}
-	
+
 	/* Aggiunge un task al progetto */
 	@Transactional
 	public void addTask(Progetto progetto, Task task)
@@ -33,7 +33,7 @@ public class TaskService
 		task.setProgetto(progetto);
 		this.save(task);
 	}
-	
+
 	/* Prende un task in base al suo id */
 	public Task getTask(Long id)
 	{
@@ -41,52 +41,79 @@ public class TaskService
 
 		return result.orElse(null);
 	}
-	
+
 	/* Elimina un task dal db */
 	@Transactional
 	public void delete(Task task)
 	{
 		this.taskRepository.delete(task);
 	}
-	
+
 	/* Ritorna i task di un progetto di cui un membro è responabile */
 	public List<Task> assignedTasks(Progetto progetto, Utente membro)
 	{
 		List<Task> taskAssegnati = this.taskRepository.findByResponsabile(membro);
 		List<Task> returnList = new ArrayList<>();
 		Iterator<Task> it = taskAssegnati.iterator();
-		
+
 		Task t = null;
 		while(it.hasNext())
 		{
 			t = it.next();
-			
+
 			if(t.getProgetto().equals(progetto))
 			{
 				returnList.add(t);
 			}
 		}
-		
+
 		return returnList;
 	}
-	
+
 	/* Verifica se il progetto ha un tag con il nome specificato */
 	public boolean hasTag(String nome, Task task)
 	{
 		List<Tag> tags = task.getTags();
 		Iterator<Tag> it = tags.iterator();
-		
+
 		Tag t = null;
 		while(it.hasNext())
 		{
 			t = it.next();
-			
+
 			if(t.getNome().equals(nome))
 			{
 				return true;
 			}
 		}
-		
+
 		return false;
+	}
+	
+	/* Elimina un tag dal task*/
+	@Transactional
+	public void deleteTag(Tag tag, Task task)
+	{
+		List<Tag> tags = task.getTags();
+		Iterator<Tag> it = tags.iterator();
+
+		Tag t = null;
+		while(it.hasNext())
+		{
+			try 
+			{
+				t = it.next();
+			}
+			catch(Exception e)
+			{
+				break;
+			}
+
+			if(t.getNome().equals(tag.getNome()))
+			{
+				task.getTags().remove(t);
+				this.taskRepository.save(task);
+			}
+		}
 	}
 }

@@ -1,5 +1,8 @@
 package it.uniroma3.siw.progetto.controller;
 
+import java.util.Iterator;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -101,6 +104,48 @@ public class TagController
 		
 		model.addAttribute("task", task);
 		model.addAttribute("progetto", progetto);
+		return "task";
+	}
+	
+	/* Elimina un tag del progetto */
+	@RequestMapping(value={"/deleteTag"}, method=RequestMethod.POST)
+	public String deleteTag(Model model, HttpServletRequest request) 
+	{
+		Tag tag = this.tagService.getTag(Long.parseLong(request.getParameter("tag")));
+		Progetto progetto = this.progettoService.getProgetto(Long.parseLong(request.getParameter("progetto")));
+		
+		List<Task> listaTask = progetto.getTasks();
+		Iterator<Task> it = listaTask.iterator();
+		
+		Task t = null;
+		while(it.hasNext())
+		{
+			t = it.next();
+			
+			if(this.taskService.hasTag(tag.getNome(), t))
+			{
+				this.taskService.deleteTag(tag, t);
+			}
+		}
+		
+		this.progettoService.deleteTag(tag, progetto);
+		
+		model.addAttribute("progetto", progetto);
+		return "project";
+	}
+	
+	/* Elimina un tag da un task */
+	@RequestMapping(value={"/deleteTagOnTask"}, method=RequestMethod.POST)
+	public String deleteTagOnTask(Model model, HttpServletRequest request) 
+	{
+		Tag tag = this.tagService.getTag(Long.parseLong(request.getParameter("tag")));
+		Progetto progetto = this.progettoService.getProgetto(Long.parseLong(request.getParameter("progetto")));
+		Task task = this.taskService.getTask(Long.parseLong(request.getParameter("task")));
+		
+		this.taskService.deleteTag(tag, task);
+		
+		model.addAttribute("progetto", progetto);
+		model.addAttribute("task", task);
 		return "task";
 	}
 }

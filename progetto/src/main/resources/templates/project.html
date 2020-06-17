@@ -83,6 +83,7 @@
 				    <th>Nome</th>
 				    <th>Colore</th>
 				    <th>Descrizione</th>
+				    <th>Azioni</th>
 				</tr>
 			</thead>
 			<tbody>	
@@ -90,6 +91,9 @@
 				    <td th:text="${tag.nome}" id="nomeTag"></td>
 				    <td th:text="${tag.descrizione}"></td>
 				    <td th:text="${tag.colore}"></td>
+				    <td><form th:action="@{'/deleteTag' + '?progetto=' + ${progetto.id} + '&tag=' + ${tag.id}}" method="POST">
+				    <button type="submit" value="delete" name="submit">cancella tag</button>
+				    </form> </td>
 				</tr>
 			</tbody>
 		</table>

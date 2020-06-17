@@ -99,4 +99,31 @@ public class ProgettoService
 	{
 		this.progettoRepository.delete(progetto);
 	}
+	
+	/* Elimina un tag dal progetto*/
+	@Transactional
+	public void deleteTag(Tag tag, Progetto progetto)
+	{
+		List<Tag> tags = progetto.getTags();
+		Iterator<Tag> it = tags.iterator();
+		
+		Tag t = null;
+		while(it.hasNext())
+		{
+			try 
+			{
+				t = it.next();
+			}
+			catch(Exception e)
+			{
+				break;
+			}
+			
+			if(t.getNome().equals(tag.getNome()))
+			{
+				progetto.getTags().remove(t);
+				this.progettoRepository.save(progetto);
+			}
+		}
+	}
 }
