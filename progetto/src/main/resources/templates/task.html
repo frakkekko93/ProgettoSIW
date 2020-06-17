@@ -53,6 +53,6 @@
 			<button type="submit" value="assignTag" name="submit">assegna tag</button>
 		</form>
 		
-		<div class="footer"><a href="/project">Torna Indietro</a></div>
+		<div class="footer"><a th:href="@{'/project' + '?progetto=' + ${progetto.id}}">Torna Indietro</a></div>
 	</body>
 </html>

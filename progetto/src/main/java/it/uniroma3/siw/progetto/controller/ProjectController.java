@@ -88,12 +88,12 @@ public class ProjectController
     }
 
 	/* Mostra la pagina del progetto */
-	@RequestMapping(value = { "/project" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/project" })
     public String showProjectPage(Model model, HttpServletRequest request)
     {
 		Progetto progetto = this.progettoService.getProgetto(Long.parseLong(request.getParameter("progetto")));
 		model.addAttribute("progetto", progetto);
-        return "insertProject";
+        return "project";
     }
 	
 	/* Effettua un operazione sul progetto selezionato */
