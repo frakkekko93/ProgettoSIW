@@ -86,13 +86,8 @@ public class AdminController
 		String comando = request.getParameter("submit");
 
 		if(comando.equals("elimina")) 
-		{
-			/* Elimino i collegamenti ai progetti visibili */
-		    this.progettoService.deleteAllProjectsMembers(utente);
-		    
+		{   
 		    /* Elimino utente e ruolo */
-		    Ruolo r = this.ruoloService.getRuolo(utente);
-		    this.ruoloService.delete(r);
 			utenteService.delete(utente);
 		}
 		

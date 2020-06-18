@@ -22,6 +22,12 @@ public class TaskService
 	@Autowired
 	protected ProgettoService progettoService;
 
+	/* Prende tutti i task del database */
+	public List<Task> getAllTasks()
+	{
+		return (List<Task>)this.taskRepository.findAll();
+	}
+	
 	/* Salva un task nel repository */
 	@Transactional
 	public void save(Task task)
