@@ -1,0 +1,324 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 12.2
+-- Dumped by pg_dump version 12.2
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+DROP DATABASE "DBprogetto";
+--
+-- Name: DBprogetto; Type: DATABASE; Schema: -; Owner: postgres
+--
+
+CREATE DATABASE "DBprogetto" WITH TEMPLATE = template0 ENCODING = 'UTF8' LC_COLLATE = 'Italian_Italy.1252' LC_CTYPE = 'Italian_Italy.1252';
+
+
+ALTER DATABASE "DBprogetto" OWNER TO postgres;
+
+\connect "DBprogetto"
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- Name: commento; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.commento (
+    id bigint NOT NULL,
+    autore character varying(255),
+    testo character varying(255) NOT NULL,
+    task_id bigint
+);
+
+
+ALTER TABLE public.commento OWNER TO postgres;
+
+--
+-- Name: hibernate_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.hibernate_sequence
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.hibernate_sequence OWNER TO postgres;
+
+--
+-- Name: progetto; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.progetto (
+    id bigint NOT NULL,
+    data_inizio timestamp without time zone NOT NULL,
+    descrizione character varying(255),
+    nome character varying(255) NOT NULL,
+    proprietario_id bigint
+);
+
+
+ALTER TABLE public.progetto OWNER TO postgres;
+
+--
+-- Name: progetto_membri; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.progetto_membri (
+    progetti_visibili_id bigint NOT NULL,
+    membri_id bigint NOT NULL
+);
+
+
+ALTER TABLE public.progetto_membri OWNER TO postgres;
+
+--
+-- Name: progetto_tags; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.progetto_tags (
+    progetto_id bigint NOT NULL,
+    tags_id bigint NOT NULL
+);
+
+
+ALTER TABLE public.progetto_tags OWNER TO postgres;
+
+--
+-- Name: ruolo; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.ruolo (
+    id bigint NOT NULL,
+    ruolo character varying(255) NOT NULL,
+    utente_id bigint
+);
+
+
+ALTER TABLE public.ruolo OWNER TO postgres;
+
+--
+-- Name: tag; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.tag (
+    id bigint NOT NULL,
+    colore character varying(255),
+    descrizione character varying(255),
+    nome character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.tag OWNER TO postgres;
+
+--
+-- Name: task; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.task (
+    id bigint NOT NULL,
+    completato boolean NOT NULL,
+    data_creazione timestamp without time zone NOT NULL,
+    descrizione character varying(255),
+    nome character varying(255) NOT NULL,
+    progetto_id bigint,
+    responsabile_id bigint
+);
+
+
+ALTER TABLE public.task OWNER TO postgres;
+
+--
+-- Name: task_tags; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.task_tags (
+    task_id bigint NOT NULL,
+    tags_id bigint NOT NULL
+);
+
+
+ALTER TABLE public.task_tags OWNER TO postgres;
+
+--
+-- Name: utente; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.utente (
+    id bigint NOT NULL,
+    cognome character varying(255),
+    data_di_creazione timestamp without time zone NOT NULL,
+    mail character varying(255),
+    nome character varying(255),
+    username character varying(255)
+);
+
+
+ALTER TABLE public.utente OWNER TO postgres;
+
+--
+-- Name: commento commento_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.commento
+    ADD CONSTRAINT commento_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: progetto progetto_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.progetto
+    ADD CONSTRAINT progetto_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: ruolo ruolo_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.ruolo
+    ADD CONSTRAINT ruolo_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: tag tag_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tag
+    ADD CONSTRAINT tag_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: task task_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.task
+    ADD CONSTRAINT task_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: utente utente_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.utente
+    ADD CONSTRAINT utente_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: task_tags fk5jrufop0gtxfeybb27jkoqn9r; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.task_tags
+    ADD CONSTRAINT fk5jrufop0gtxfeybb27jkoqn9r FOREIGN KEY (task_id) REFERENCES public.task(id);
+
+
+--
+-- Name: progetto_membri fk8cle3yknrshlsext4j4h8cu22; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.progetto_membri
+    ADD CONSTRAINT fk8cle3yknrshlsext4j4h8cu22 FOREIGN KEY (progetti_visibili_id) REFERENCES public.progetto(id);
+
+
+--
+-- Name: progetto_tags fk92d4gu9i0jffoae0idnaag33a; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.progetto_tags
+    ADD CONSTRAINT fk92d4gu9i0jffoae0idnaag33a FOREIGN KEY (tags_id) REFERENCES public.tag(id);
+
+
+--
+-- Name: progetto fkaqifgag2461yi0drlhai568ub; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.progetto
+    ADD CONSTRAINT fkaqifgag2461yi0drlhai568ub FOREIGN KEY (proprietario_id) REFERENCES public.utente(id);
+
+
+--
+-- Name: task fkbujtobyfj3fptyyxdf73vd4a7; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.task
+    ADD CONSTRAINT fkbujtobyfj3fptyyxdf73vd4a7 FOREIGN KEY (responsabile_id) REFERENCES public.utente(id);
+
+
+--
+-- Name: task_tags fkes0ksybarf59lj57xuuhgb5yr; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.task_tags
+    ADD CONSTRAINT fkes0ksybarf59lj57xuuhgb5yr FOREIGN KEY (tags_id) REFERENCES public.tag(id);
+
+
+--
+-- Name: progetto_tags fkgqojtoohvlmigqeb8ygapcyr3; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.progetto_tags
+    ADD CONSTRAINT fkgqojtoohvlmigqeb8ygapcyr3 FOREIGN KEY (progetto_id) REFERENCES public.progetto(id);
+
+
+--
+-- Name: task fkhoch48rqsqb58xyi2sokryryt; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.task
+    ADD CONSTRAINT fkhoch48rqsqb58xyi2sokryryt FOREIGN KEY (progetto_id) REFERENCES public.progetto(id);
+
+
+--
+-- Name: ruolo fkj0hq51w6xnl2olglno0hn6ti8; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.ruolo
+    ADD CONSTRAINT fkj0hq51w6xnl2olglno0hn6ti8 FOREIGN KEY (utente_id) REFERENCES public.utente(id);
+
+
+--
+-- Name: progetto_membri fkkn6h9qs2q8tyf68yb4id85tal; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.progetto_membri
+    ADD CONSTRAINT fkkn6h9qs2q8tyf68yb4id85tal FOREIGN KEY (membri_id) REFERENCES public.utente(id);
+
+
+--
+-- Name: commento fkp0wlypbn4vemwrc2rkwelprl7; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.commento
+    ADD CONSTRAINT fkp0wlypbn4vemwrc2rkwelprl7 FOREIGN KEY (task_id) REFERENCES public.task(id);
+
+
+--
+-- PostgreSQL database dump complete
+--
+

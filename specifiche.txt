@@ -1,0 +1,32 @@
+DESCRIZIONE TESTUALE DEI CASI D'USO IMPLEMENTATI
+-L'utente può effettuare l'acceso al sistema tramite il suo account github.
+
+-L'utente una volta autenticato può:
+    -visualizzare il proprio profilo;
+    -creare un nuovo progetto;
+    -visualizzare i progetti creati;
+    -visualizzare i progetti condivisi con lui.
+
+-In visualizza il proprio profilo l'utente può modificare i propri dati personali.
+
+-Per i progetti che crea, l'utente può:
+    -modificare i dati del progetto;
+    -inserire task e modificarli;
+    -condividere il progetto con altri utenti;
+    -assegnare tag al progetto;
+    -può inoltre assegnare ad ogni singolo task uno o più dei tag assegnati al progetto;
+    -può assegnare un task ad un utente con cui ha condiviso il progetto;
+    -può segnare il task come completato o meno;
+    -può cancellare un tag sia dai task che dal progetto;
+    -può cancellare un task dal progetto;
+    -può cancellare un progetto con tutti i suoi task e tag.
+    
+-In visualizza i progetti condivisi con me l'utente può:
+    -visualizzare i progetti, la lista di tutti i task del progetto e la lista dei task che gli sono stati assegnati;
+    -per i task che non gli sono stati assegnati l'utente può solo visualizzarli ed aggiungere un commento;
+    -per i task che gli sono stati assegnati può anche indicarli come completati o meno.
+    
+-Se il ruolo dell'utente non è di DEFAULT ma di ADMIN, una volta autenticato accederà all'home page dell'admin dove: 
+    -potrà visualizzare i propri dati e modificarli;
+    -potrà visualizzare la lista di tutti gli utenti registrati nel sistema;
+    -di un utente scelto potrà vedere tutti i dati ed eventualmente eliminarlo dal sistema con tutti i suoi progetti.
